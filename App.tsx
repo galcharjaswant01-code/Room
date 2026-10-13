@@ -75,10 +75,6 @@ const WishlistPage: React.FC = () => {
 import SearchPage from './pages/SearchPage';
 
 const RootRoute: React.FC = () => {
-  const { currentUser } = useApp();
-  if (currentUser?.role === UserRole.OWNER) {
-    return <Navigate to="/owner" replace />;
-  }
   return <HomePage />;
 };
 
@@ -108,7 +104,7 @@ const AppContent: React.FC = () => {
             } />
             
             <Route path="/client" element={
-              <PrivateRoute roles={[UserRole.MANAGER, UserRole.ADMIN]}>
+              <PrivateRoute roles={[UserRole.GUEST, UserRole.MANAGER, UserRole.OWNER, UserRole.ADMIN]}>
                 <ClientDashboard />
               </PrivateRoute>
             } />

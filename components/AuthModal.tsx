@@ -88,8 +88,8 @@ const AuthModal: React.FC = () => {
       }
 
       const syncedUser = syncUserFromAuth({
-        email: user.email || 'galcharjaswant01@gmail.com',
-        name: user.displayName || (finalRole === UserRole.OWNER ? 'Jaswant Galchar' : 'StayHub Member'),
+        email: user.email || '',
+        name: user.displayName || (finalRole === UserRole.OWNER ? 'Property Owner' : 'StayHub Member'),
         avatar: user.photoURL || undefined,
         role: finalRole
       });
@@ -98,7 +98,7 @@ const AuthModal: React.FC = () => {
 
       // Navigate appropriately based on strict owner role
       if (syncedUser.role === UserRole.OWNER) {
-        toast.success(`Welcome to your Owner Dashboard, ${syncedUser.name}!`);
+        toast.success(`Welcome to your Owner Dashboard!`);
         navigate('/owner');
       } else {
         toast.success(`Welcome back, ${syncedUser.name}!`);
@@ -119,9 +119,9 @@ const AuthModal: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // STRICT RULE: Only galcharjaswant01@gmail.com is allowed as Owner
+      // STRICT RULE: Only authorized email is allowed as Owner
       if (selectedRole === 'owner' && cleanEmail !== 'galcharjaswant01@gmail.com') {
-        setError('Only galcharjaswant01@gmail.com is authorized as Property Owner. All other email addresses are Guests.');
+        setError('This email is not authorized as Property Owner. Please use the registered owner email or continue in Guest mode.');
         setIsLoading(false);
         return;
       }
@@ -317,7 +317,7 @@ const AuthModal: React.FC = () => {
                 type="button"
                 onClick={() => {
                   if (cleanEmail && cleanEmail !== 'galcharjaswant01@gmail.com') {
-                    toast.error('Only galcharjaswant01@gmail.com is allowed as Property Owner');
+                    toast.error('Only the authorized owner email can select Owner mode');
                     return;
                   }
                   setSelectedRole('owner');
@@ -332,9 +332,9 @@ const AuthModal: React.FC = () => {
                 <div>
                   <div className="text-xs font-bold flex items-center gap-1.5">
                     <span>Property Owner</span>
-                    <span className="text-[9px] bg-amber-100 text-amber-800 font-extrabold px-1.5 py-0.2 rounded">1 Email Only</span>
+                    <span className="text-[9px] bg-emerald-100 text-emerald-800 font-extrabold px-1.5 py-0.2 rounded">Authorized</span>
                   </div>
-                  <div className="text-[10px] text-zinc-500 mt-0.5">galcharjaswant01@gmail.com</div>
+                  <div className="text-[10px] text-zinc-500 mt-0.5">Property Management Portal</div>
                 </div>
               </button>
             </div>
@@ -380,7 +380,7 @@ const AuthModal: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Jaswant Galchar"
+                    placeholder="Enter your full name"
                     value={fullName}
                     onChange={e => setFullName(e.target.value)}
                     className="bg-transparent flex-1 text-sm outline-none text-zinc-900 font-semibold"
@@ -398,7 +398,7 @@ const AuthModal: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="galcharjaswant01@gmail.com"
+                  placeholder="name@example.com"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   className="bg-transparent flex-1 text-sm outline-none text-zinc-900 font-semibold"
@@ -417,11 +417,11 @@ const AuthModal: React.FC = () => {
                         <div className="text-xs font-black text-emerald-900 flex items-center justify-between">
                           <span>Verified Primary Owner Account</span>
                           <span className="text-[10px] bg-emerald-200/80 text-emerald-800 px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wide">
-                            Owner Formation
+                            Owner Portal
                           </span>
                         </div>
                         <p className="text-[11px] text-emerald-700 mt-1 leading-relaxed">
-                          Authorized Owner Email (Jaswant Galchar). You will be routed into <strong>Owner Formation (/owner)</strong> with full management controls.
+                          Authorized Owner Account Confirmed. You will be routed into <strong>Owner Dashboard (/owner)</strong> with full property management controls.
                         </p>
                       </div>
                     </div>
@@ -434,11 +434,11 @@ const AuthModal: React.FC = () => {
                         <div className="text-xs font-black text-indigo-900 flex items-center justify-between">
                           <span>Guest / Tenant Account Confirmed</span>
                           <span className="text-[10px] bg-indigo-200/80 text-indigo-800 px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wide">
-                            Guest Formation
+                            Guest Portal
                           </span>
                         </div>
                         <p className="text-[11px] text-indigo-700 mt-1 leading-relaxed">
-                          You will be routed into <strong>Guest Formation (/rooms)</strong> to explore and book rooms. <em>(Owner formation is strictly restricted to galcharjaswant01@gmail.com)</em>.
+                          You will be routed into <strong>Guest Portal (/rooms)</strong> to explore, view, and book properties.
                         </p>
                       </div>
                     </div>

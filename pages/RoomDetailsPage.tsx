@@ -328,7 +328,7 @@ const RoomDetailsPage: React.FC = () => {
                   <span>Owner Notified & Request Pending</span>
                 </div>
                 <p className="text-xs text-amber-800 leading-relaxed font-medium">
-                  Your reservation request was sent to Owner Jaswant Galchar. Once accepted, your stay will be confirmed and room reserved!
+                  Your reservation request was sent to the Property Owner. Once accepted, your stay will be confirmed and room reserved!
                 </p>
               </div>
             )}

@@ -11,9 +11,9 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const navLinks = [
-    { path: '/rooms', label: 'Explore Stays', roles: [] },
-    { path: '/wishlist', label: 'Wishlist', roles: [UserRole.GUEST], count: wishlist.length },
-    { path: '/client', label: 'Manage', roles: [UserRole.MANAGER] },
+    { path: '/rooms', label: '🔍 Explore Rooms', roles: [] },
+    { path: '/client', label: '📅 My Bookings', roles: [UserRole.GUEST] },
+    { path: '/wishlist', label: '❤️ Wishlist', roles: [UserRole.GUEST], count: wishlist.length },
     { path: '/owner', label: '🏢 Owner Dashboard', roles: [UserRole.OWNER] },
   ];
 

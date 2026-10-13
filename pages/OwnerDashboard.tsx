@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useApp } from '../store';
 import { BookingStatus } from '../types';
@@ -36,6 +36,7 @@ const OwnerDashboard: React.FC = () => {
     { id: 'Booking Requests', icon: '📅', label: 'Booking Requests' },
     { id: 'Earnings', icon: '💰', label: 'Earnings & Payouts' },
     { id: 'Profile', icon: '👤', label: 'Owner Profile' },
+    { id: 'Explore Rooms', icon: '🔍', label: 'Explore Rooms', isLink: true, path: '/rooms' },
   ];
 
   const renderContent = () => {
@@ -86,6 +87,21 @@ const OwnerDashboard: React.FC = () => {
          <div className="p-3.5 flex-1 overflow-y-auto space-y-1">
             {tabs.map(tab => {
               const isActive = activeTab === tab.id;
+              if ((tab as any).isLink) {
+                return (
+                  <Link
+                    key={tab.id}
+                    to={(tab as any).path}
+                    className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all text-left text-indigo-700 bg-indigo-50/70 hover:bg-indigo-100/80 border border-indigo-200/50 mt-2"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-base">{tab.icon}</span>
+                      <span>{tab.label}</span>
+                    </div>
+                    <span className="text-[11px] font-black text-indigo-500">View ↗</span>
+                  </Link>
+                );
+              }
               return (
                 <button
                   key={tab.id}

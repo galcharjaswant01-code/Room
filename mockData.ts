@@ -2,8 +2,8 @@ import { Room, RoomStatus, Booking, BookingStatus, User, UserRole, Transaction, 
 
 export const mockUsers: User[] = [
   {
-    id: 'u-jaswant-owner',
-    name: 'Jaswant Galchar',
+    id: 'u-owner-main',
+    name: 'Property Owner',
     email: 'galcharjaswant01@gmail.com',
     role: UserRole.OWNER,
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256',
@@ -480,8 +480,8 @@ export const mockMessages: any[] = [
     id: 'm1',
     senderId: 'u2',
     receiverId: 'u1',
-    content: 'Hello Jaswant, is early check-in available for the 1BHK in Alkapuri?',
-    text: 'Hello Jaswant, is early check-in available for the 1BHK in Alkapuri?',
+    content: 'Hello, is early check-in available for the 1BHK in Alkapuri?',
+    text: 'Hello, is early check-in available for the 1BHK in Alkapuri?',
     timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
     isRead: true
   },

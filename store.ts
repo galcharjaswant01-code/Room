@@ -285,11 +285,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.setItem(`stayhub_role_${cleanEmail}`, detectedRole === UserRole.OWNER ? 'owner' : 'guest');
     }
 
-    const resolvedEmail = email || 'galcharjaswant01@gmail.com';
-    const resolvedName = name || (detectedRole === UserRole.OWNER ? 'Jaswant Galchar' : resolvedEmail.split('@')[0]) || 'User';
+    const resolvedEmail = cleanEmail || (detectedRole === UserRole.OWNER ? 'galcharjaswant01@gmail.com' : 'guest@stayhub.com');
+    const resolvedName = name || (detectedRole === UserRole.OWNER ? 'Property Owner' : resolvedEmail.split('@')[0]) || 'User';
+
+    const userId = cleanEmail === 'galcharjaswant01@gmail.com'
+      ? 'u-owner-main'
+      : `guest_${cleanEmail.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
     const localUser: User = {
-      id: cleanEmail === 'galcharjaswant01@gmail.com' ? 'u-jaswant-owner' : 'user-' + Date.now(),
+      id: userId,
       name: resolvedName,
       email: resolvedEmail,
       role: detectedRole,
@@ -374,7 +378,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const ownerNotification: Notification = {
       id: `notif-book-${Date.now()}`,
-      userId: 'u-jaswant-owner',
+      userId: 'u-owner-main',
       title: '🔔 New Guest Booking Request!',
       message: `${guestName} booked "${roomTitle}" from ${newBookingData.startDate} to ${newBookingData.endDate} (₹${totalFormatted}). Please review and accept this stay!`,
       timestamp: createdTimestamp,
@@ -450,7 +454,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: `notif-appr-${Date.now()}`,
           userId: targetBooking.clientId,
           title: '🎉 Booking Accepted by Owner!',
-          message: `Owner Jaswant Galchar has accepted your booking for "${room?.title || 'your room'}" (${targetBooking.startDate} to ${targetBooking.endDate}). Your stay is confirmed!`,
+          message: `The Property Owner has accepted your booking for "${room?.title || 'your room'}" (${targetBooking.startDate} to ${targetBooking.endDate}). Your stay is confirmed!`,
           timestamp: new Date().toISOString(),
           isRead: false,
           type: 'BOOKING',
