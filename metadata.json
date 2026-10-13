@@ -1,0 +1,8 @@
+
+{
+  "name": "StayHub - Pro Room Rentals",
+  "description": "A comprehensive room rental platform with role-based dashboards for clients, managers, owners, and admins. Features map integration, booking workflows, and financial analytics.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

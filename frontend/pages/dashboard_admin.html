@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | StayHub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #F3F4F6; }
+        .dashboard-container { display: flex; min-height: calc(100vh - 73px); }
+        .sidebar { width: 250px; background: var(--color-primary); color: white; padding: var(--spacing-xl) 0; }
+        .sidebar-menu { display: flex; flex-direction: column; }
+        .sidebar-link { padding: var(--spacing-sm) var(--spacing-xl); color: #9CA3AF; font-weight: 500; transition: all var(--transition-fast); display: flex; align-items: center; gap: 10px; }
+        .sidebar-link:hover, .sidebar-link.active { background-color: rgba(255,255,255,0.1); color: white; border-right: 3px solid var(--color-accent); }
+        .dashboard-main { flex: 1; padding: var(--spacing-2xl); overflow-y: auto; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-2xl); }
+        .stat-card { background: var(--color-surface); padding: var(--spacing-md); border-radius: var(--border-radius-md); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); text-align: center; }
+        .stat-card h4 { color: var(--color-text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--color-primary); }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">StayHub<span class="logo-dot">.</span></a>
+            <div class="nav-actions">
+                <span class="user-greeting" id="user-greeting">Admin Panel</span>
+                <button onclick="api.logout()" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-menu">
+                <a href="#" class="sidebar-link active"><i class="fas fa-chart-pie"></i> Overview</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-users"></i> Users</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-home"></i> Properties</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-calendar-check"></i> Bookings</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main container">
+            <div class="section-header">
+                <h2>System Overview</h2>
+                <p>Platform metrics and quick actions.</p>
+            </div>
+
+            <div class="stat-grid" id="stats-container">
+                <div class="stat-card"><h4>Total Users</h4><div class="value" id="s-users">...</div></div>
+                <div class="stat-card"><h4>Owners</h4><div class="value" id="s-owners">...</div></div>
+                <div class="stat-card"><h4>Tenants</h4><div class="value" id="s-tenants">...</div></div>
+                <div class="stat-card"><h4>Properties</h4><div class="value" id="s-props">...</div></div>
+                <div class="stat-card"><h4>Bookings</h4><div class="value" id="s-bookings">...</div></div>
+            </div>
+
+            <div style="background: white; padding: 40px; text-align: center; border-radius: 8px; border: 1px solid #e5e7eb;">
+                <i class="fas fa-tools" style="font-size: 3rem; color: var(--color-text-muted); margin-bottom: 20px;"></i>
+                <h3>Admin Management Features</h3>
+                <p style="color: #666; max-width: 500px; margin: 0 auto;">Full CRUD management for Users, Properties, and Bookings is accessible via the Django Admin panel interface.</p>
+                <a href="http://127.0.0.1:8000/admin/" target="_blank" class="btn btn-primary" style="margin-top: 20px;">Open Django Admin</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) return window.location.href = 'auth.html';
+            const user = JSON.parse(userStr);
+            if (user.role !== 'admin') return window.location.href = '../index.html';
+            
+            try {
+                const stats = await api.request('/dashboard/admin/', 'GET');
+                document.getElementById('s-users').textContent = stats.total_users;
+                document.getElementById('s-owners').textContent = stats.total_owners;
+                document.getElementById('s-tenants').textContent = stats.total_tenants;
+                document.getElementById('s-props').textContent = stats.total_properties;
+                document.getElementById('s-bookings').textContent = stats.total_bookings;
+            } catch (e) {
+                console.error("Dashboard error", e);
+            }
+        });
+    </script>
+</body>
+</html>

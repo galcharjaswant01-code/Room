@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | StayHub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #F3F4F6; }
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl);
+        }
+        .auth-card {
+            background: var(--color-surface);
+            max-width: 450px;
+            width: 100%;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-2xl);
+        }
+        .auth-header { text-align: center; margin-bottom: var(--spacing-xl); }
+        .auth-header .logo { font-size: 2rem; display: block; margin-bottom: var(--spacing-sm); }
+        .auth-tabs { display: flex; border-bottom: 1px solid var(--color-border); margin-bottom: var(--spacing-lg); }
+        .auth-tab {
+            flex: 1; text-align: center; padding: var(--spacing-sm) 0;
+            cursor: pointer; font-weight: 600; color: var(--color-text-muted);
+            border-bottom: 2px solid transparent; transition: all var(--transition-fast);
+        }
+        .auth-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .google-btn {
+            width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--border-radius-sm);
+            background: var(--color-surface); font-weight: 500; cursor: pointer; transition: all var(--transition-fast);
+            margin-bottom: var(--spacing-md);
+        }
+        .google-btn:hover { background-color: #F9FAFB; }
+        .divider {
+            display: flex; align-items: center; text-align: center; color: var(--color-text-muted);
+            font-size: 0.85rem; margin-bottom: var(--spacing-md);
+        }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--color-border); }
+        .divider:not(:empty)::before { margin-right: .25em; }
+        .divider:not(:empty)::after { margin-left: .25em; }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="../index.html" class="logo">StayHub<span class="logo-dot">.</span></a>
+                <p>Welcome back! Please enter your details.</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</div>
+                <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Register</div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <button type="button" class="google-btn" id="login-google-btn">
+                    <i class="fab fa-google text-red-500"></i> Continue with Google
+                </button>
+                <div class="divider">or</div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Sign In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form">
+                <button type="button" class="google-btn" id="reg-google-btn">
+                    <i class="fab fa-google text-red-500"></i> Register with Google
+                </button>
+                <div class="divider">or</div>
+
+                <div class="form-group">
+                    <label class="form-label" for="reg-role">I am a...</label>
+                    <select id="reg-role" class="form-control" required>
+                        <option value="tenant">Tenant (Looking for a room)</option>
+                        <option value="owner">Property Owner (Listing a room)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Create Account</button>
+            </form>
+
+            <div id="auth-error" style="color: red; margin-top: 10px; text-align: center; font-size: 0.9rem; display: none;"></div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById(tab + '-form').classList.add('active');
+            document.getElementById('auth-error').style.display = 'none';
+        }
+        
+        // Check URL params for pre-selecting mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        if (mode === 'register') {
+            switchTab('register');
+        } else if (mode === 'owner') {
+            switchTab('register');
+            document.getElementById('reg-role').value = 'owner';
+        }
+    </script>
+</body>
+</html>

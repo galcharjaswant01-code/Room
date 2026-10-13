@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property | StayHub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #F3F4F6; }
+        .dashboard-container { display: flex; min-height: calc(100vh - 73px); }
+        .sidebar { width: 250px; background: var(--color-surface); border-right: 1px solid var(--color-border); padding: var(--spacing-xl) 0; }
+        .sidebar-menu { display: flex; flex-direction: column; }
+        .sidebar-link { padding: var(--spacing-sm) var(--spacing-xl); color: var(--color-text-muted); font-weight: 500; transition: all var(--transition-fast); display: flex; align-items: center; gap: 10px; }
+        .sidebar-link:hover, .sidebar-link.active { background-color: #F9FAFB; color: var(--color-primary); border-right: 3px solid var(--color-accent); }
+        .dashboard-main { flex: 1; padding: var(--spacing-2xl); overflow-y: auto; }
+        
+        .form-panel { background: var(--color-surface); border-radius: var(--border-radius-md); border: 1px solid var(--color-border); padding: var(--spacing-xl); box-shadow: var(--shadow-sm); max-width: 800px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">StayHub<span class="logo-dot">.</span></a>
+            <div class="nav-actions">
+                <span class="user-greeting" id="user-greeting">Hi, Owner</span>
+                <button onclick="api.logout()" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-menu">
+                <a href="dashboard_owner.html" class="sidebar-link"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="owner_properties.html" class="sidebar-link"><i class="fas fa-home"></i> My Properties</a>
+                <a href="#" class="sidebar-link active"><i class="fas fa-plus"></i> Add Property</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main container">
+            <div class="section-header">
+                <h2>Add New Property</h2>
+                <p>Enter the details of the room you want to list.</p>
+            </div>
+
+            <div class="form-panel">
+                <form id="add-property-form">
+                    <div class="form-group">
+                        <label class="form-label">Property Title</label>
+                        <input type="text" id="prop-title" class="form-control" required placeholder="e.g. Sunny Studio in Downtown">
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Monthly Rent (₹)</label>
+                            <input type="number" id="prop-price" class="form-control" required placeholder="15000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Room Type</label>
+                            <select id="prop-type" class="form-control" required>
+                                <option value="single">Single Room</option>
+                                <option value="shared">Shared Room</option>
+                                <option value="studio">Studio Apartment</option>
+                                <option value="full">Full Apartment</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">City/Area</label>
+                        <input type="text" id="prop-location" class="form-control" required placeholder="e.g. Mumbai, Andheri West">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Full Address</label>
+                        <textarea id="prop-address" class="form-control" rows="2" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="prop-desc" class="form-control" rows="4" required placeholder="Describe the property..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Property Images (4-8 images recommended)</label>
+                        <input type="file" id="prop-images" class="form-control" accept="image/*" multiple required>
+                        <small style="color:var(--color-text-muted);">First image will be the primary image.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;" id="submit-btn">Publish Property</button>
+                    <div id="form-msg" style="margin-top: 15px; text-align: center; font-weight: 500;"></div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) return window.location.href = 'auth.html';
+            const user = JSON.parse(userStr);
+            if (user.role !== 'owner') return window.location.href = '../index.html';
+            
+            document.getElementById('user-greeting').textContent = `Hi, ${user.first_name || user.username}`;
+
+            document.getElementById('add-property-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submit-btn');
+                const msg = document.getElementById('form-msg');
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+                
+                try {
+                    // 1. Create Room
+                    const newRoom = await api.request('/properties/rooms/', 'POST', {
+                        title: document.getElementById('prop-title').value,
+                        price: document.getElementById('prop-price').value,
+                        room_type: document.getElementById('prop-type').value,
+                        location: document.getElementById('prop-location').value,
+                        address: document.getElementById('prop-address').value,
+                        description: document.getElementById('prop-desc').value,
+                        is_available: true,
+                        is_active: true
+                    });
+                    
+                    // 2. Upload Images sequentially
+                    const imageFiles = document.getElementById('prop-images').files;
+                    if (imageFiles.length > 0) {
+                        btn.textContent = 'Uploading Images...';
+                        for (let i = 0; i < imageFiles.length; i++) {
+                            const formData = new FormData();
+                            formData.append('image', imageFiles[i]);
+                            if (i === 0) formData.append('is_primary', 'true');
+                            
+                            await fetch(`${api.baseUrl}/properties/rooms/${newRoom.id}/images/`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                                },
+                                body: formData
+                            });
+                        }
+                    }
+                    
+                    msg.style.color = 'green';
+                    msg.textContent = 'Property listed successfully! Redirecting...';
+                    setTimeout(() => window.location.href = 'owner_properties.html', 1500);
+                } catch(err) {
+                    msg.style.color = 'red';
+                    msg.textContent = 'Failed to list property. Check inputs.';
+                    btn.disabled = false;
+                    btn.textContent = 'Publish Property';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

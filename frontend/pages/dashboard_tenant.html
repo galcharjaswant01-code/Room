@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Dashboard | StayHub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #F3F4F6; }
+        .dashboard-container { display: flex; min-height: calc(100vh - 73px); }
+        .sidebar { width: 250px; background: var(--color-surface); border-right: 1px solid var(--color-border); padding: var(--spacing-xl) 0; }
+        .sidebar-menu { display: flex; flex-direction: column; }
+        .sidebar-link { padding: var(--spacing-sm) var(--spacing-xl); color: var(--color-text-muted); font-weight: 500; transition: all var(--transition-fast); display: flex; align-items: center; gap: 10px; }
+        .sidebar-link:hover, .sidebar-link.active { background-color: #F9FAFB; color: var(--color-primary); border-right: 3px solid var(--color-accent); }
+        .dashboard-main { flex: 1; padding: var(--spacing-2xl); overflow-y: auto; }
+        
+        .booking-list { display: flex; flex-direction: column; gap: var(--spacing-md); }
+        .booking-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius-md); padding: var(--spacing-lg); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
+        .booking-info h4 { margin-bottom: var(--spacing-xs); }
+        .booking-meta { color: var(--color-text-muted); font-size: 0.9rem; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .status-confirmed { background-color: #D1FAE5; color: #065F46; }
+        .status-pending { background-color: #FEF3C7; color: #92400E; }
+        .status-completed { background-color: #DBEAFE; color: #1E40AF; }
+        .status-cancelled { background-color: #FEE2E2; color: #991B1B; }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">StayHub<span class="logo-dot">.</span></a>
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="search.html">Browse Rooms</a>
+            </nav>
+            <div class="nav-actions">
+                <span class="user-greeting" id="user-greeting">Hi, Tenant</span>
+                <button onclick="api.logout()" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-menu">
+                <a href="#" class="sidebar-link active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-calendar-alt"></i> My Bookings</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-envelope"></i> Messages</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-star"></i> Reviews</a>
+                <a href="#" class="sidebar-link"><i class="fas fa-user"></i> Profile</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main container">
+            <div class="section-header">
+                <h2>My Bookings</h2>
+                <p>Manage your current and past room rentals.</p>
+            </div>
+
+            <div class="booking-list" id="bookings-container">
+                <div class="loading-spinner">Loading bookings...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            const user = JSON.parse(userStr);
+            if (user.role !== 'tenant') {
+                window.location.href = '../index.html'; // Or owner dashboard
+                return;
+            }
+            
+            document.getElementById('user-greeting').textContent = `Hi, ${user.first_name || user.username}`;
+
+            const container = document.getElementById('bookings-container');
+            
+            try {
+                // To fetch bookings, we need api.request('/bookings/')
+                const bookings = await api.request('/bookings/', 'GET');
+                
+                if (bookings.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 40px; background: white; border-radius: 8px;">No bookings found. <br><a href="search.html" class="btn btn-primary" style="margin-top: 15px;">Find a Room</a></div>';
+                    return;
+                }
+
+                container.innerHTML = bookings.map(b => `
+                    <div class="booking-card">
+                        <div class="booking-info">
+                            <h4>${b.room_details ? b.room_details.title : 'Unknown Room'}</h4>
+                            <div class="booking-meta">
+                                <div><i class="fas fa-calendar"></i> ${b.check_in_date} to ${b.check_out_date}</div>
+                                <div><i class="fas fa-money-bill-wave"></i> Total: ₹${b.total_amount}</div>
+                            </div>
+                        </div>
+                        <div class="booking-status text-right">
+                            <span class="status-badge status-${b.status}">${b.status}</span>
+                            <div style="margin-top: 10px;">
+                                <a href="room_detail.html?id=${b.room}" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;">View Room</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                container.innerHTML = '<div style="color:red;">Failed to load bookings. Please try again.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

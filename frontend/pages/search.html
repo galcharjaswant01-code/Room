@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Rooms | StayHub</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .search-page { display: flex; gap: var(--spacing-xl); padding-top: var(--spacing-xl); }
+        .sidebar-filters { width: 280px; flex-shrink: 0; }
+        .filter-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--border-radius-md); padding: var(--spacing-md); position: sticky; top: 90px; }
+        .filter-group { margin-bottom: var(--spacing-md); }
+        .filter-group h4 { margin-bottom: var(--spacing-sm); font-size: 0.95rem; }
+        .results-container { flex: 1; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">StayHub<span class="logo-dot">.</span></a>
+            <nav class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="search.html" class="active">Browse Rooms</a>
+            </nav>
+            <div class="nav-actions">
+                <!-- Injected via JS -->
+                <a href="auth.html" class="btn btn-outline">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container search-page">
+        <aside class="sidebar-filters">
+            <div class="filter-card">
+                <h3>Filters</h3>
+                <form id="filter-form">
+                    <div class="filter-group">
+                        <h4>Location</h4>
+                        <input type="text" id="filter-location" class="form-control" placeholder="City or area">
+                    </div>
+                    <div class="filter-group">
+                        <h4>Room Type</h4>
+                        <select id="filter-type" class="form-control">
+                            <option value="">All Types</option>
+                            <option value="single">Single Room</option>
+                            <option value="shared">Shared Room</option>
+                            <option value="studio">Studio Apartment</option>
+                            <option value="full">Full Apartment</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Max Price</h4>
+                        <input type="range" id="filter-price" min="5000" max="50000" step="1000" value="50000" style="width: 100%">
+                        <div style="display:flex; justify-content:space-between; font-size: 0.8rem; margin-top: 5px;">
+                            <span>₹5k</span><span id="price-val">₹50k</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%">Apply Filters</button>
+                    <button type="button" id="reset-filters" class="btn btn-text" style="width: 100%; margin-top: 5px;">Reset</button>
+                </form>
+            </div>
+        </aside>
+
+        <section class="results-container">
+            <div class="results-header">
+                <h2 id="results-count">Loading rooms...</h2>
+                <div class="sort-by">
+                    <select id="sort-select" class="form-control" style="width: auto;">
+                        <option value="-created_at">Newest First</option>
+                        <option value="price">Price: Low to High</option>
+                        <option value="-price">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="rooms-grid" id="search-results">
+                <!-- Room cards injected via JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+</html>

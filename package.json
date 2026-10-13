@@ -1,0 +1,36 @@
+{
+  "name": "stayhub---pro-room-rentals",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "^1.34.0",
+    "@types/leaflet": "^1.9.22",
+    "date-fns": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "firebase": "^12.13.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.26.0",
+    "papaparse": "^5.5.4",
+    "react": "^19.2.3",
+    "react-countup": "^6.5.3",
+    "react-dom": "^19.2.3",
+    "react-hot-toast": "^2.6.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.11.0",
+    "recharts": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "@types/node": "^22.14.0",
+    "@types/papaparse": "^5.5.2",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
