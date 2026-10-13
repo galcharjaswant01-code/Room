@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useApp } from '../store';
+import { BookingStatus } from '../types';
 import OverviewTab from '../components/owner/OverviewTab';
 import MyPropertiesTab from '../components/owner/MyPropertiesTab';
 import AddPropertyTab from '../components/owner/AddPropertyTab';
@@ -9,11 +11,23 @@ import EarningsTab from '../components/owner/EarningsTab';
 import ProfileTab from '../components/owner/ProfileTab';
 
 const OwnerDashboard: React.FC = () => {
-  const { currentUser } = useApp();
+  const { currentUser, bookings } = useApp();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('Overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam === 'bookings' || tabParam === 'Booking Requests') {
+      setActiveTab('Booking Requests');
+    }
+  }, [searchParams]);
+
   if (!currentUser) return null;
+
+  const pendingBookingsCount = bookings.filter(
+    b => b.status === BookingStatus.PENDING || (b.status as any) === 'pending'
+  ).length;
 
   const tabs = [
     { id: 'Overview', icon: '📊', label: 'Overview' },
@@ -79,14 +93,23 @@ const OwnerDashboard: React.FC = () => {
                     setActiveTab(tab.id);
                     setSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all text-left ${
+                  className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all text-left ${
                     isActive 
                       ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' 
                       : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
                   }`}
                 >
-                  <span className="text-base">{tab.icon}</span>
-                  <span>{tab.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-base">{tab.icon}</span>
+                    <span>{tab.label}</span>
+                  </div>
+                  {tab.id === 'Booking Requests' && pendingBookingsCount > 0 && (
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${
+                      isActive ? 'bg-amber-400 text-amber-950' : 'bg-amber-500 text-white animate-pulse'
+                    }`}>
+                      {pendingBookingsCount}
+                    </span>
+                  )}
                 </button>
               );
             })}

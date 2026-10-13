@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../store';
 import { Bell, Check, Trash2, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Notification } from '../types';
 
 const NotificationBell: React.FC = () => {
-  const { notifications, markNotificationAsRead, markAllNotificationsAsRead } = useApp();
+  const { notifications, markNotificationAsRead, markAllNotificationsAsRead, currentUser } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
@@ -30,11 +31,25 @@ const NotificationBell: React.FC = () => {
     }
   };
 
+  const getDestination = (notif: Notification) => {
+    if (notif.link) return notif.link;
+    if (currentUser?.role === 'OWNER') return '/owner?tab=bookings';
+    return '/client';
+  };
+
+  const formatTimestamp = (ts: string) => {
+    if (!ts || ts === 'Just now') return 'Just now';
+    const d = new Date(ts);
+    if (isNaN(d.getTime())) return ts;
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
   const handleNotificationClick = async (notif: Notification) => {
     if (!notif.isRead) {
       await markNotificationAsRead(notif.id);
     }
     setIsOpen(false);
+    navigate(getDestination(notif));
   };
 
   return (
@@ -76,6 +91,7 @@ const NotificationBell: React.FC = () => {
                 {notifications.slice(0, 20).map(notif => (
                   <div 
                     key={notif.id} 
+                    onClick={() => handleNotificationClick(notif)}
                     className={`p-4 hover:bg-zinc-50 transition-colors cursor-pointer flex gap-3 ${!notif.isRead ? 'bg-indigo-50/30' : ''}`}
                   >
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-lg">
@@ -96,13 +112,13 @@ const NotificationBell: React.FC = () => {
                       
                       <div className="mt-2 flex items-center justify-between">
                         <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
-                          {new Date(notif.timestamp).toLocaleDateString()}
+                          {formatTimestamp(notif.timestamp)}
                         </span>
                         
                         <div className="flex gap-2">
                           <Link 
-                            to={notif.type === 'BOOKING' ? '/client' : '#'} // Simple route handling for demo
-                            onClick={() => handleNotificationClick(notif)}
+                            to={getDestination(notif)}
+                            onClick={(e) => { e.stopPropagation(); handleNotificationClick(notif); }}
                             className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 bg-indigo-50 px-2 py-1 rounded"
                           >
                             <ExternalLink className="w-3 h-3" /> View
@@ -111,6 +127,7 @@ const NotificationBell: React.FC = () => {
                             <button 
                               onClick={(e) => { e.stopPropagation(); markNotificationAsRead(notif.id); }}
                               className="text-[10px] font-bold text-zinc-500 hover:text-zinc-700 bg-zinc-100 px-2 py-1 rounded"
+                              title="Mark as read"
                             >
                               <Check className="w-3 h-3" />
                             </button>

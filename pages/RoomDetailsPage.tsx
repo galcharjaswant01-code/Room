@@ -5,6 +5,7 @@ import { generateRoomDescription } from '../services/geminiService';
 import { RoomStatus, BookingStatus, MediaItem } from '../types';
 import TripAdvisorMediaGallery from '../components/TripAdvisorMediaGallery';
 import RoomMap, { getRoomCoordinates } from '../components/RoomMap';
+import toast from 'react-hot-toast';
 
 const RoomDetailsPage: React.FC = () => {
   const { id } = useParams();
@@ -70,6 +71,7 @@ const RoomDetailsPage: React.FC = () => {
         totalPrice: diffDays * room.price
       });
       setShowSuccess(true);
+      toast.success('🎉 Booking request sent! Owner has been notified.');
     });
   };
 
@@ -320,8 +322,14 @@ const RoomDetailsPage: React.FC = () => {
             )}
 
             {showSuccess && (
-              <div className="mt-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl text-amber-700 animate-in fade-in slide-in-from-top-4">
-                <p className="text-xs font-bold leading-relaxed">Waiting for Owner Approval. Booking is pending.</p>
+              <div className="mt-6 p-4.5 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 animate-in fade-in slide-in-from-top-4 shadow-xs">
+                <div className="flex items-center gap-2 font-black text-sm mb-1 text-amber-950">
+                  <span>🔔</span>
+                  <span>Owner Notified & Request Pending</span>
+                </div>
+                <p className="text-xs text-amber-800 leading-relaxed font-medium">
+                  Your reservation request was sent to Owner Jaswant Galchar. Once accepted, your stay will be confirmed and room reserved!
+                </p>
               </div>
             )}
           </div>

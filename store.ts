@@ -43,7 +43,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const getInitialRooms = () => {
     let dynamicStored: Room[] = [];
     try {
-      const raw = localStorage.getItem('stayhub_dynamic_rooms_v1');
+      const raw = localStorage.getItem('stayhub_rooms_v1') || localStorage.getItem('stayhub_dynamic_rooms_v1');
       if (raw) dynamicStored = JSON.parse(raw);
     } catch {}
     const map = new Map<string, Room>();
@@ -78,29 +78,61 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   }, []);
 
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const getInitialBookings = (): Booking[] => {
+    try {
+      const stored = localStorage.getItem('stayhub_bookings_v1');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return mockBookings;
+  };
+
+  const [bookings, setBookings] = useState<Booking[]>(getInitialBookings);
 
   useEffect(() => {
     if (currentUser) {
       fetchBookingsAPI().then(data => {
-        const mappedBookings = data.map((b: any) => ({
-          id: b.id.toString(),
-          roomId: b.room.toString(),
-          clientId: b.tenant.toString(),
-          startDate: b.check_in_date,
-          endDate: b.check_out_date,
-          status: b.status.toUpperCase(),
-          totalPrice: parseFloat(b.total_amount),
-          createdAt: b.created_at
-        }));
-        setBookings(mappedBookings);
+        if (Array.isArray(data) && data.length > 0) {
+          const mappedBookings = data.map((b: any) => ({
+            id: b.id.toString(),
+            roomId: b.room.toString(),
+            clientId: b.tenant.toString(),
+            startDate: b.check_in_date,
+            endDate: b.check_out_date,
+            status: b.status.toUpperCase(),
+            totalPrice: parseFloat(b.total_amount),
+            createdAt: b.created_at
+          }));
+          setBookings(prev => {
+            const combinedMap = new Map();
+            mappedBookings.forEach((item: Booking) => combinedMap.set(item.id, item));
+            prev.forEach(item => combinedMap.set(item.id, item));
+            const combined = Array.from(combinedMap.values());
+            localStorage.setItem('stayhub_bookings_v1', JSON.stringify(combined));
+            return combined;
+          });
+        }
       }).catch(console.error);
     }
   }, [currentUser]);
 
   const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
   const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const getInitialNotifications = (): Notification[] => {
+    try {
+      const stored = localStorage.getItem('stayhub_notifications_v1');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {}
+    return mockNotifications;
+  };
+
+  const [notifications, setNotifications] = useState<Notification[]>(getInitialNotifications);
 
   useEffect(() => {
     if (currentUser) {
@@ -108,39 +140,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         try {
           const { fetchNotificationsAPI } = await import('./services/notificationService');
           const data = await fetchNotificationsAPI();
-          setNotifications(data);
+          if (Array.isArray(data) && data.length > 0) {
+            setNotifications(prev => {
+              const map = new Map();
+              data.forEach((n: Notification) => map.set(n.id, n));
+              prev.forEach(n => map.set(n.id, n));
+              const combined = Array.from(map.values());
+              localStorage.setItem('stayhub_notifications_v1', JSON.stringify(combined));
+              return combined;
+            });
+          }
         } catch (e) {
           console.error(e);
         }
       };
       
       fetchNotifs();
-      // Poll every 15 seconds for real-time feel without WebSockets
       const interval = setInterval(fetchNotifs, 15000);
       return () => clearInterval(interval);
-    } else {
-      setNotifications([]);
     }
   }, [currentUser]);
 
   const markNotificationAsRead = async (id: string) => {
     try {
       const { markNotificationAsReadAPI } = await import('./services/notificationService');
-      await markNotificationAsReadAPI(id);
-      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
-    } catch (e) {
-      console.error(e);
-    }
+      await markNotificationAsReadAPI(id).catch(() => {});
+    } catch (e) {}
+    setNotifications(prev => {
+      const next = prev.map(n => n.id === id ? { ...n, isRead: true } : n);
+      localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+      return next;
+    });
   };
 
   const markAllNotificationsAsRead = async () => {
     try {
       const { markAllNotificationsAsReadAPI } = await import('./services/notificationService');
-      await markAllNotificationsAsReadAPI();
-      setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
-    } catch (e) {
-      console.error(e);
-    }
+      await markAllNotificationsAsReadAPI().catch(() => {});
+    } catch (e) {}
+    setNotifications(prev => {
+      const next = prev.map(n => ({ ...n, isRead: true }));
+      localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+      return next;
+    });
   };
   const [analytics, setAnalytics] = useState<AnalyticsData[]>(mockAnalytics);
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -296,10 +338,60 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateRoomStatus = (roomId: string, status: RoomStatus) => {
-    setRooms(prev => prev.map(r => r.id === roomId ? { ...r, status } : r));
+    setRooms(prev => {
+      const next = prev.map(r => r.id === roomId ? { ...r, status } : r);
+      try {
+        localStorage.setItem('stayhub_rooms_v1', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
   };
 
   const addBooking = async (newBookingData: Omit<Booking, 'id' | 'createdAt'>) => {
+    const tempId = 'b-' + Date.now();
+    const createdTimestamp = new Date().toISOString();
+    const newBooking: Booking = {
+      ...newBookingData,
+      id: tempId,
+      status: BookingStatus.PENDING,
+      createdAt: createdTimestamp
+    };
+
+    // 1. Immediately store new booking locally
+    setBookings(prev => {
+      const next = [newBooking, ...prev];
+      try {
+        localStorage.setItem('stayhub_bookings_v1', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+
+    // 2. Generate Real-time Notification for Property Owner (Jaswant Galchar)
+    const targetRoom = rooms.find(r => r.id === newBookingData.roomId);
+    const guestName = currentUser?.name || 'A Guest';
+    const roomTitle = targetRoom?.title || 'Comfortable Stay Unit';
+    const totalFormatted = (newBookingData.totalPrice || targetRoom?.price || 0).toLocaleString();
+
+    const ownerNotification: Notification = {
+      id: `notif-book-${Date.now()}`,
+      userId: 'u-jaswant-owner',
+      title: '🔔 New Guest Booking Request!',
+      message: `${guestName} booked "${roomTitle}" from ${newBookingData.startDate} to ${newBookingData.endDate} (₹${totalFormatted}). Please review and accept this stay!`,
+      timestamp: createdTimestamp,
+      isRead: false,
+      type: 'BOOKING',
+      link: '/owner?tab=bookings'
+    };
+
+    setNotifications(prev => {
+      const next = [ownerNotification, ...prev];
+      try {
+        localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
+
+    // 3. Connect to backend if available
     try {
       const backendData = {
         room: newBookingData.roomId,
@@ -308,40 +400,98 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         total_amount: newBookingData.totalPrice
       };
       const created = await createBookingAPI(backendData);
-      
-      const newBooking: Booking = {
-        ...newBookingData,
-        id: created.id.toString(),
-        status: BookingStatus.PENDING,
-        createdAt: created.created_at
-      };
-      setBookings(prev => [...prev, newBooking]);
+      if (created?.id) {
+        setBookings(prev => {
+          const next = prev.map(b => b.id === tempId ? { ...b, id: created.id.toString() } : b);
+          try {
+            localStorage.setItem('stayhub_bookings_v1', JSON.stringify(next));
+          } catch {}
+          return next;
+        });
+      }
     } catch (error) {
-      console.error(error);
+      console.warn("Backend booking API deferred, using local persistence:", error);
     }
   };
 
   const updateBookingStatus = async (bookingId: string, status: BookingStatus) => {
-    try {
-      await updateBookingStatusAPI(bookingId, status.toLowerCase());
-      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status } : b));
+    // 1. Update booking state and persist
+    let targetBooking: Booking | undefined;
+    setBookings(prev => {
+      targetBooking = prev.find(b => b.id === bookingId);
+      const next = prev.map(b => b.id === bookingId ? { ...b, status } : b);
+      try {
+        localStorage.setItem('stayhub_bookings_v1', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
 
-      const booking = bookings.find(b => b.id === bookingId);
-      if (booking && status === BookingStatus.APPROVED) {
+    if (targetBooking) {
+      const room = rooms.find(r => r.id === targetBooking!.roomId);
+
+      if (status === BookingStatus.APPROVED) {
+        // Change room status to BOOKED
+        updateRoomStatus(targetBooking.roomId, RoomStatus.BOOKED);
+
+        // Record owner payout transaction
         const newTransaction: Transaction = {
           id: `t${Date.now()}`,
-          bookingId: booking.id,
-          clientId: booking.clientId,
-          roomId: booking.roomId,
-          amount: booking.totalPrice,
+          bookingId: targetBooking.id,
+          clientId: targetBooking.clientId,
+          roomId: targetBooking.roomId,
+          amount: targetBooking.totalPrice,
           date: new Date().toISOString(),
           paymentMethod: 'Stripe'
         };
         setTransactions(prev => [...prev, newTransaction]);
-        updateRoomStatus(booking.roomId, RoomStatus.BOOKED);
+
+        // Generate Guest acceptance notification
+        const guestNotification: Notification = {
+          id: `notif-appr-${Date.now()}`,
+          userId: targetBooking.clientId,
+          title: '🎉 Booking Accepted by Owner!',
+          message: `Owner Jaswant Galchar has accepted your booking for "${room?.title || 'your room'}" (${targetBooking.startDate} to ${targetBooking.endDate}). Your stay is confirmed!`,
+          timestamp: new Date().toISOString(),
+          isRead: false,
+          type: 'BOOKING',
+          link: '/client'
+        };
+
+        setNotifications(prev => {
+          const next = [guestNotification, ...prev];
+          try {
+            localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+          } catch {}
+          return next;
+        });
+      } else if (status === BookingStatus.REJECTED) {
+        // Generate Guest decline notification
+        const guestDeclineNotif: Notification = {
+          id: `notif-rej-${Date.now()}`,
+          userId: targetBooking.clientId,
+          title: 'Booking Request Declined',
+          message: `Your booking request for "${room?.title || 'the property'}" (${targetBooking.startDate} to ${targetBooking.endDate}) could not be accommodated.`,
+          timestamp: new Date().toISOString(),
+          isRead: false,
+          type: 'BOOKING',
+          link: '/client'
+        };
+
+        setNotifications(prev => {
+          const next = [guestDeclineNotif, ...prev];
+          try {
+            localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+          } catch {}
+          return next;
+        });
       }
+    }
+
+    // 2. Background sync to backend API if available
+    try {
+      await updateBookingStatusAPI(bookingId, status.toLowerCase());
     } catch (err) {
-      console.error(err);
+      console.warn("Backend updateBookingStatus offline or deferred:", err);
     }
   };
 

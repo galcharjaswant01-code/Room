@@ -120,6 +120,7 @@ export interface Notification {
   isRead: boolean;
   type: 'BOOKING' | 'MESSAGE' | 'SYSTEM' | 'REVIEW';
   relatedId?: number;
+  link?: string;
 }
 
 export interface AnalyticsData {
