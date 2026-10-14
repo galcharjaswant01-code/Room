@@ -4,6 +4,8 @@ import { mockUsers, mockRooms, mockBookings, mockTransactions, mockMessages, moc
 import { auth } from './services/firebase';
 import { onIdTokenChanged } from 'firebase/auth';
 import { createBookingAPI, fetchBookingsAPI, updateBookingStatusAPI } from './services/backendService';
+import { fetchProperties } from './services/propertyService';
+import { fetchMeAPI } from './services/authService';
 
 interface AppState {
   currentUser: User | null;
@@ -64,18 +66,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   useEffect(() => {
-    import('./services/propertyService').then(module => {
-      module.fetchProperties().then(fetchedRooms => {
-        if (fetchedRooms && fetchedRooms.length > 0) {
-          setRooms(prev => {
-            const map = new Map<string, Room>();
-            prev.forEach(r => map.set(r.id, r));
-            fetchedRooms.forEach(r => map.set(r.id, r));
-            return Array.from(map.values());
-          });
-        }
-      }).catch(console.error);
-    });
+    fetchProperties().then(fetchedRooms => {
+      if (fetchedRooms && fetchedRooms.length > 0) {
+        setRooms(prev => {
+          const map = new Map<string, Room>();
+          prev.forEach(r => map.set(r.id, r));
+          fetchedRooms.forEach(r => map.set(r.id, r));
+          return Array.from(map.values());
+        });
+      }
+    }).catch(console.error);
   }, []);
 
   const getInitialBookings = (): Booking[] => {
@@ -226,7 +226,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const token = localStorage.getItem('access_token');
       if (token) {
         try {
-          const { fetchMeAPI } = await import('./services/authService');
           const data = await fetchMeAPI();
           const roleMapping: Record<string, UserRole> = {
             'tenant': UserRole.GUEST,
@@ -308,8 +307,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('stayhub_current_user', JSON.stringify(localUser));
 
     // Background backend profile sync
-    import('./services/authService').then(({ fetchMeAPI }) => {
-      fetchMeAPI().then(data => {
+    fetchMeAPI().then(data => {
         // Enforce: ONLY galcharjaswant01@gmail.com is allowed as Owner
         const backendRole = data.email?.toLowerCase() === 'galcharjaswant01@gmail.com' ? UserRole.OWNER : UserRole.GUEST;
         const updatedUser: User = {
@@ -328,7 +326,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }).catch(err => {
         // Fallback already assigned
       });
-    });
 
     return localUser;
   };

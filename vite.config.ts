@@ -18,6 +18,35 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        chunkSizeWarningLimit: 1200,
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+                  return 'vendor-react';
+                }
+                if (id.includes('leaflet') || id.includes('react-leaflet')) {
+                  return 'vendor-leaflet';
+                }
+                if (id.includes('recharts')) {
+                  return 'vendor-charts';
+                }
+                if (id.includes('firebase')) {
+                  return 'vendor-firebase';
+                }
+                if (id.includes('@google/genai')) {
+                  return 'vendor-ai';
+                }
+                if (id.includes('lucide-react')) {
+                  return 'vendor-lucide';
+                }
+              }
+            }
+          }
+        }
       }
     };
 });
