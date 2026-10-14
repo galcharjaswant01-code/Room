@@ -1,12 +1,21 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+const apiKey = (process.env.API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '').trim();
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+  try {
+    ai = new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.warn("Gemini AI client initialization skipped:", e);
+  }
+}
 
 export async function generateRoomDescription(title: string, amenities: string[]): Promise<string> {
+  if (!ai) return "Beautifully furnished room ready for your stay.";
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.5-flash',
       contents: `Write a compelling, short marketing description (max 2 sentences) for a rental room titled "${title}" with amenities: ${amenities.join(', ')}.`,
     });
     return response.text || "No description generated.";
