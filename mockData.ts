@@ -504,7 +504,7 @@ export const mockNotifications: Notification[] = [
     message: 'Sarah Connor submitted a stay request for Furnished 1BHK Apartment in Alkapuri.',
     timestamp: '2 hours ago',
     isRead: false,
-    type: 'booking'
+    type: 'BOOKING'
   }
 ];
 

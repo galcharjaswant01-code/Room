@@ -9,7 +9,8 @@ export enum UserRole {
 export enum RoomStatus {
   AVAILABLE = 'AVAILABLE',
   BOOKED = 'BOOKED',
-  PENDING = 'PENDING'
+  PENDING = 'PENDING',
+  MAINTENANCE = 'MAINTENANCE'
 }
 
 export enum BookingStatus {
@@ -77,7 +78,7 @@ export interface Room {
   rating: number;
   reviewCount: number;
   reviews: Review[];
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Booking {
@@ -88,7 +89,7 @@ export interface Booking {
   endDate: string;
   status: BookingStatus;
   totalPrice: number;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Transaction {
