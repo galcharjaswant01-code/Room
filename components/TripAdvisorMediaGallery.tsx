@@ -217,15 +217,23 @@ const TripAdvisorMediaGallery: React.FC<TripAdvisorMediaGalleryProps> = ({
                 : 'border-transparent opacity-50 hover:opacity-100'
             }`}
           >
-            <img
-              src={item.thumbnail || item.url}
-              alt={item.caption}
-              className="w-full h-full object-cover"
-            />
-            {item.type === 'video' && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center">▶</span>
+            {item.type === 'video' ? (
+              <div className="w-full h-full bg-zinc-800 relative flex items-center justify-center">
+                {item.thumbnail ? (
+                  <img src={item.thumbnail} alt={item.caption} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-indigo-950 flex items-center justify-center text-indigo-300 text-xs">🎥</div>
+                )}
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center shadow-md">▶</span>
+                </div>
               </div>
+            ) : (
+              <img
+                src={item.url}
+                alt={item.caption}
+                className="w-full h-full object-cover"
+              />
             )}
           </button>
         ))}

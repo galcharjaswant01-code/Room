@@ -24,8 +24,8 @@ const RoomCard: React.FC<{
     }).format(price);
   };
 
-  const fallbackImg = "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80";
-  const defaultVideoUrl = "/room-images/room-video-1.mp4";
+  const fallbackImg = "/room-images/luxury-room-1.jpeg";
+  const defaultVideoUrl = "/room-videos/12684293_1920_1080_60fps.mp4";
 
   const isNew = (() => {
     if (!room.createdAt) return false;

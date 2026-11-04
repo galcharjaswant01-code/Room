@@ -29,41 +29,59 @@ export const initialRooms: Room[] = [
     city: 'Vadodara',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/luxury-room-1.jpeg',
+      '/room-images/room1.jpg',
+      '/room-images/room-exterior-1.jpeg',
       'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80'
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
+    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
+    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
         id: 'med-r1-main',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
-        caption: 'Master Bedroom with Double Bed',
+        url: '/room-images/luxury-room-1.jpeg',
+        caption: 'Master Bedroom with Luxury Suite Finish',
         category: 'Rooms'
       },
       {
         id: 'med-r1-2',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80',
-        caption: 'Living & Dining Area',
+        url: '/room-images/room1.jpg',
+        caption: 'Bedroom Living & Study Interior',
         category: 'Rooms'
       },
       {
         id: 'med-r1-3',
+        type: 'image',
+        url: '/room-images/room-exterior-1.jpeg',
+        caption: 'Apartment Exterior & Neighborhood Perspective',
+        category: 'Exterior'
+      },
+      {
+        id: 'med-r1-4',
         type: 'image',
         url: 'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80',
         caption: 'Clean Modular Kitchen',
         category: 'Amenities'
       },
       {
-        id: 'med-r1-4',
+        id: 'med-r1-5',
         type: 'image',
         url: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
         caption: 'Attached Tiled Bathroom',
         category: 'Amenities'
+      },
+      {
+        id: 'med-r1-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: '/room-images/luxury-room-1.jpeg',
+        caption: '1BHK Alkapuri Full 60fps HD Walkthrough Video',
+        category: 'Videos'
       }
     ],
     amenities: ['Hi-Speed WiFi', 'Split AC', 'Modular Kitchen', 'Geyser', 'Wardrobe', 'Bike Parking'],
@@ -99,24 +117,36 @@ export const initialRooms: Room[] = [
     city: 'Vadodara',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/room1.jpg',
+      '/room-images/luxury-room-1.jpeg',
       'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80'
     ],
+    videoUrl: '/room-videos/13394638_1080_1920_30fps.mp4',
+    videoThumbnail: '/room-images/room1.jpg',
     mediaGallery: [
       {
         id: 'med-r2-1',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
+        url: '/room-images/room1.jpg',
         caption: 'Study Desk and Single Bed',
         category: 'Rooms'
       },
       {
         id: 'med-r2-2',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=800&q=80',
-        caption: 'Bed & Natural Window Light',
+        url: '/room-images/luxury-room-1.jpeg',
+        caption: 'Natural Light Room Space',
         category: 'Rooms'
+      },
+      {
+        id: 'med-r2-vid',
+        type: 'video',
+        url: '/room-videos/13394638_1080_1920_30fps.mp4',
+        thumbnail: '/room-images/room1.jpg',
+        caption: 'MSU Campus PG HD Video Tour',
+        category: 'Videos'
       }
     ],
     amenities: ['Hi-Speed WiFi', 'Split AC', 'Study Table', 'Cupboard', 'RO Drinking Water', 'Geyser'],
@@ -142,25 +172,36 @@ export const initialRooms: Room[] = [
     city: 'Vadodara',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/luxury-room-1.jpeg',
+      '/room-images/room1.jpg',
       'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80'
     ],
+    videoUrl: '/room-images/room-video-1.mp4',
+    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
         id: 'med-r3-1',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
+        url: '/room-images/luxury-room-1.jpeg',
         caption: 'Master Bedroom with Balcony View',
         category: 'Rooms'
       },
       {
         id: 'med-r3-2',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80',
-        caption: 'Living Room Space',
+        url: '/room-images/room1.jpg',
+        caption: 'Second Bedroom & Seating',
         category: 'Rooms'
+      },
+      {
+        id: 'med-r3-vid',
+        type: 'video',
+        url: '/room-images/room-video-1.mp4',
+        thumbnail: '/room-images/luxury-room-1.jpeg',
+        caption: 'Manjalpur 2BHK Video Walkthrough',
+        category: 'Videos'
       }
     ],
     amenities: ['Balcony', 'Lift Facility', 'Gated Security', 'Covered Parking', 'Modular Kitchen', 'Power Backup'],
@@ -186,17 +227,28 @@ export const initialRooms: Room[] = [
     city: 'Ahmedabad',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/luxury-room-1.jpeg',
+      '/room-images/room1.jpg',
       'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'
     ],
+    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
+    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
         id: 'med-r4-1',
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
+        url: '/room-images/luxury-room-1.jpeg',
         caption: 'Studio Living & Bed Area',
         category: 'Rooms'
+      },
+      {
+        id: 'med-r4-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: '/room-images/luxury-room-1.jpeg',
+        caption: 'Studio Walkthrough Video Tour',
+        category: 'Videos'
       }
     ],
     amenities: ['Hi-Speed WiFi', 'Smart TV', 'Air Conditioning', 'Workstation', 'Attached Bath', 'Geyser'],
@@ -222,11 +274,31 @@ export const initialRooms: Room[] = [
     city: 'Gandhinagar',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/room1.jpg',
+      '/room-images/luxury-room-1.jpeg',
       'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80'
     ],
-    mediaGallery: [],
+    videoUrl: '/room-videos/13394638_1080_1920_30fps.mp4',
+    videoThumbnail: '/room-images/room1.jpg',
+    mediaGallery: [
+      {
+        id: 'med-r5-1',
+        type: 'image',
+        url: '/room-images/room1.jpg',
+        caption: 'Twin Sharing Student Room',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r5-vid',
+        type: 'video',
+        url: '/room-videos/13394638_1080_1920_30fps.mp4',
+        thumbnail: '/room-images/room1.jpg',
+        caption: 'Twin Sharing Room Video Tour',
+        category: 'Videos'
+      }
+    ],
     amenities: ['WiFi Included', 'Individual Desks', 'Daily Housekeeping', 'RO Water', 'CCTV Security'],
     type: 'Single',
     category: 'Urban',
@@ -250,11 +322,30 @@ export const initialRooms: Room[] = [
     city: 'Surat',
     status: RoomStatus.AVAILABLE,
     images: [
+      '/room-images/luxury-room-1.jpeg',
+      '/room-images/room1.jpg',
       'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80'
     ],
-    mediaGallery: [],
+    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
+    videoThumbnail: '/room-images/luxury-room-1.jpeg',
+    mediaGallery: [
+      {
+        id: 'med-r6-1',
+        type: 'image',
+        url: '/room-images/luxury-room-1.jpeg',
+        caption: 'Cozy 1RK Main Room',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r6-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: '/room-images/luxury-room-1.jpeg',
+        caption: '1RK Balcony Flat Video Tour',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Private Balcony', 'Ceiling Fan', 'Attached Bath', 'BRTS Nearby', 'Bike Parking'],
     type: 'Single',
     category: 'Urban',
