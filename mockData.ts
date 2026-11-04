@@ -376,6 +376,30 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r7-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Sea Facing Studio Suite',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r7-2',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Bedroom Living View',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r7-vid',
+        type: 'video',
+        url: '/room-videos/13394638_1080_1920_30fps.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Bandra Sea-Facing Studio Video Tour',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Sea View', 'Split AC', 'Smart TV', 'High Speed WiFi', 'Modular Pantry', '24x7 Security'],
     type: 'Suite',
     category: 'Luxury',
@@ -415,6 +439,23 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r8-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Koramangala Executive 1BHK',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r8-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Koramangala 1BHK Video Walkthrough',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Fiber WiFi', 'Workstation', 'Power Backup', 'Split AC', 'Modular Kitchen', 'Lift'],
     type: 'Single',
     category: 'Urban',
@@ -444,6 +485,23 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r9-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Kalawad Road 2BHK Main Living',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r9-vid',
+        type: 'video',
+        url: '/room-videos/room-video-1.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Rajkot 2BHK Flat Video Tour',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Private Balcony', 'Covered Parking', 'Lift', 'RO Water', 'CCTV Security'],
     type: 'Double',
     category: 'Urban',
@@ -473,6 +531,23 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r10-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Calangute Beachside Villa',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r10-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Goa Villa Video Tour',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Pool Access', 'Beach Walking Distance', 'Air Conditioning', 'WiFi', 'Balcony', 'Parking'],
     type: 'Suite',
     category: 'Beach',
@@ -502,6 +577,23 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r11-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Jaipur Heritage Studio',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r11-vid',
+        type: 'video',
+        url: '/room-videos/13394638_1080_1920_30fps.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Heritage Studio Walkthrough',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Heritage Interior', 'Split AC', 'Fast WiFi', 'Courtyard Access', 'Geyser', 'Car Parking'],
     type: 'Suite',
     category: 'Historic',
@@ -531,6 +623,23 @@ export const initialRooms: Room[] = [
     ],
     videoUrl: '/room-images/room-video-1.mp4',
     videoThumbnail: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
+    mediaGallery: [
+      {
+        id: 'med-r12-1',
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Koregaon Park 1BHK',
+        category: 'Rooms'
+      },
+      {
+        id: 'med-r12-vid',
+        type: 'video',
+        url: '/room-videos/12684293_1920_1080_60fps.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Pune 1BHK Video Walkthrough',
+        category: 'Videos'
+      }
+    ],
     amenities: ['Green Balcony', 'Split AC', 'Hi-Speed WiFi', 'Covered Parking', 'Gated Security'],
     type: 'Single',
     category: 'Urban',

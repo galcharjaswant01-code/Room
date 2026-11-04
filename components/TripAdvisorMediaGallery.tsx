@@ -22,6 +22,8 @@ const TripAdvisorMediaGallery: React.FC<TripAdvisorMediaGalleryProps> = ({
   const [activeFilter, setActiveFilter] = useState<MediaCategoryFilter>('ALL');
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [activeVideoSrc, setActiveVideoSrc] = useState<string>('');
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Filter items based on active category tab
@@ -34,9 +36,25 @@ const TripAdvisorMediaGallery: React.FC<TripAdvisorMediaGalleryProps> = ({
   const currentItem = filteredItems[currentIndex] || filteredItems[0] || mediaItems[0];
 
   useEffect(() => {
+    if (currentItem?.type === 'video') {
+      setActiveVideoSrc(resolveVideoUrl(currentItem.url));
+    }
+  }, [currentItem]);
+
+  useEffect(() => {
+    setCurrentIndex(initialIndex);
+  }, [initialIndex]);
+
+  useEffect(() => {
     // Reset index to 0 when filter changes
     setCurrentIndex(0);
   }, [activeFilter]);
+
+  const handleVideoError = () => {
+    if (activeVideoSrc !== '/room-videos/12684293_1920_1080_60fps.mp4') {
+      setActiveVideoSrc('/room-videos/12684293_1920_1080_60fps.mp4');
+    }
+  };
 
   useEffect(() => {
     // Keyboard navigation
@@ -165,16 +183,33 @@ const TripAdvisorMediaGallery: React.FC<TripAdvisorMediaGalleryProps> = ({
           <div className="relative max-w-5xl w-full aspect-video bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center">
             <video
               ref={videoRef}
-              src={resolveVideoUrl(currentItem.url)}
+              src={activeVideoSrc || resolveVideoUrl(currentItem.url)}
               autoPlay
               controls
+              muted={isVideoMuted}
               loop
               playsInline
+              preload="auto"
+              onError={handleVideoError}
               className="w-full h-full object-contain"
             />
-            <div className="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md shadow-md flex items-center gap-1.5">
+            <div className="absolute top-4 left-4 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md shadow-md flex items-center gap-1.5 z-10">
               <span>🎥</span> HD Walkthrough Video
             </div>
+            {isVideoMuted && (
+              <button
+                onClick={() => {
+                  if (videoRef.current) {
+                    videoRef.current.muted = false;
+                    setIsVideoMuted(false);
+                  }
+                }}
+                className="absolute top-4 right-4 z-10 px-3.5 py-1.5 rounded-full bg-black/80 hover:bg-indigo-600 text-white text-xs font-bold backdrop-blur-md border border-white/20 transition-all flex items-center gap-1.5 shadow-xl active:scale-95"
+              >
+                <span>🔇</span>
+                <span>Unmute Audio</span>
+              </button>
+            )}
           </div>
         ) : (
           <div className="relative max-w-6xl max-h-[75vh] flex items-center justify-center">
