@@ -14,635 +14,646 @@ export const mockUsers: User[] = [
 
 export const initialRooms: Room[] = [
   {
-    id: 'r1',
-    title: 'Furnished 1BHK Apartment in Alkapuri',
-    description: 'Well-maintained and fully furnished 1BHK apartment in central Alkapuri. Includes wooden double bed, wardrobe, high-speed WiFi, modular kitchen setup, and dedicated parking space. Walking distance from market and cafes.',
+    id: "r1",
+    title: "Furnished 1BHK Apartment in Alkapuri",
+    description: "Well-maintained and fully furnished 1BHK apartment in central Alkapuri. Includes wooden double bed, wardrobe, high-speed WiFi, modular kitchen setup, and dedicated parking space. Walking distance from market and cafes.",
     price: 11500,
     location: {
       lat: 22.3107,
       lng: 73.1812,
-      address: 'RC Dutt Road, Alkapuri, Vadodara, Gujarat'
+      address: "RC Dutt Road, Alkapuri, Vadodara, Gujarat"
     },
     latitude: 22.3107,
     longitude: 73.1812,
-    address: 'RC Dutt Road, Alkapuri, Vadodara, Gujarat',
-    city: 'Vadodara',
+    address: "RC Dutt Road, Alkapuri, Vadodara, Gujarat",
+    city: "Vadodara",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/luxury-room-1.jpeg',
-      '/room-images/room1.jpg',
-      '/room-images/room-exterior-1.jpeg',
-      'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
-    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
-        id: 'med-r1-main',
-        type: 'image',
-        url: '/room-images/luxury-room-1.jpeg',
-        caption: 'Master Bedroom with Luxury Suite Finish',
-        category: 'Rooms'
+        id: "med-r1-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80",
+        caption: "Master Bedroom with Double Bed",
+        category: "Rooms"
       },
       {
-        id: 'med-r1-2',
-        type: 'image',
-        url: '/room-images/room1.jpg',
-        caption: 'Bedroom Living & Study Interior',
-        category: 'Rooms'
+        id: "med-r1-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        caption: "Living & Dining Area",
+        category: "Rooms"
       },
       {
-        id: 'med-r1-3',
-        type: 'image',
-        url: '/room-images/room-exterior-1.jpeg',
-        caption: 'Apartment Exterior & Neighborhood Perspective',
-        category: 'Exterior'
+        id: "med-r1-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80",
+        caption: "Clean Modular Kitchen",
+        category: "Amenities"
       },
       {
-        id: 'med-r1-4',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80',
-        caption: 'Clean Modular Kitchen',
-        category: 'Amenities'
-      },
-      {
-        id: 'med-r1-5',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
-        caption: 'Attached Tiled Bathroom',
-        category: 'Amenities'
-      },
-      {
-        id: 'med-r1-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: '/room-images/luxury-room-1.jpeg',
-        caption: '1BHK Alkapuri Full 60fps HD Walkthrough Video',
-        category: 'Videos'
+        id: "med-r1-4",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        caption: "Attached Tiled Bathroom",
+        category: "Amenities"
       }
     ],
-    amenities: ['Hi-Speed WiFi', 'Split AC', 'Modular Kitchen', 'Geyser', 'Wardrobe', 'Bike Parking'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "Hi-Speed WiFi",
+      "Split AC",
+      "Modular Kitchen",
+      "Geyser",
+      "Wardrobe",
+      "Bike Parking"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.8,
     reviewCount: 24,
     reviews: [
       {
-        id: 'rev1',
-        userId: 'u2',
-        userName: 'Rahul Sharma',
-        userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256',
+        id: "rev1",
+        userId: "u2",
+        userName: "Rahul Sharma",
+        userAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256",
         rating: 5,
-        comment: 'Very clean and spacious 1BHK. The location in Alkapuri is super convenient.',
-        date: '2026-08-20'
+        comment: "Very clean and spacious 1BHK. The location in Alkapuri is super convenient.",
+        date: "2026-08-20"
       }
     ]
   },
   {
-    id: 'r2',
-    title: 'Single AC Room PG near MSU Campus',
-    description: 'Comfortable and quiet private single room PG for students and working professionals. Equipped with study table, bookshelf, single cot with mattress, split AC, and 24x7 water facility. High speed WiFi included.',
+    id: "r2",
+    title: "Single AC Room PG near MSU Campus",
+    description: "Comfortable and quiet private single room PG for students and working professionals. Equipped with study table, bookshelf, single cot with mattress, split AC, and 24x7 water facility. High speed WiFi included.",
     price: 6500,
     location: {
       lat: 22.3216,
       lng: 73.1724,
-      address: 'Near University Road, Fatehgunj, Vadodara, Gujarat'
+      address: "Near University Road, Fatehgunj, Vadodara, Gujarat"
     },
     latitude: 22.3216,
     longitude: 73.1724,
-    address: 'Near University Road, Fatehgunj, Vadodara, Gujarat',
-    city: 'Vadodara',
+    address: "Near University Road, Fatehgunj, Vadodara, Gujarat",
+    city: "Vadodara",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/room1.jpg',
-      '/room-images/luxury-room-1.jpeg',
-      'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-videos/13394638_1080_1920_30fps.mp4',
-    videoThumbnail: '/room-images/room1.jpg',
     mediaGallery: [
       {
-        id: 'med-r2-1',
-        type: 'image',
-        url: '/room-images/room1.jpg',
-        caption: 'Study Desk and Single Bed',
-        category: 'Rooms'
+        id: "med-r2-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        caption: "Study Desk and Single Bed",
+        category: "Rooms"
       },
       {
-        id: 'med-r2-2',
-        type: 'image',
-        url: '/room-images/luxury-room-1.jpeg',
-        caption: 'Natural Light Room Space',
-        category: 'Rooms'
+        id: "med-r2-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80",
+        caption: "Bed & Natural Window Light",
+        category: "Rooms"
       },
       {
-        id: 'med-r2-vid',
-        type: 'video',
-        url: '/room-videos/13394638_1080_1920_30fps.mp4',
-        thumbnail: '/room-images/room1.jpg',
-        caption: 'MSU Campus PG HD Video Tour',
-        category: 'Videos'
+        id: "med-r2-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80",
+        caption: "Wardrobe & Corner Seating",
+        category: "Amenities"
       }
     ],
-    amenities: ['Hi-Speed WiFi', 'Split AC', 'Study Table', 'Cupboard', 'RO Drinking Water', 'Geyser'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "Hi-Speed WiFi",
+      "Split AC",
+      "Study Table",
+      "Cupboard",
+      "RO Drinking Water",
+      "Geyser"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.7,
     reviewCount: 19,
     reviews: []
   },
   {
-    id: 'r3',
-    title: 'Spacious 2BHK Flat with Balcony in Manjalpur',
-    description: 'Spacious and ventilated 2BHK flat in a peaceful gated society. Comes with two bedrooms, airy balcony, semi-modular kitchen, lift facility, and round-the-clock security. Ideal for families and couples.',
+    id: "r3",
+    title: "Spacious 2BHK Flat with Balcony in Manjalpur",
+    description: "Spacious and ventilated 2BHK flat in a peaceful gated society. Comes with two bedrooms, airy balcony, semi-modular kitchen, lift facility, and round-the-clock security. Ideal for families and couples.",
     price: 14000,
     location: {
       lat: 22.2858,
       lng: 73.1974,
-      address: 'Main Ring Road, Manjalpur, Vadodara, Gujarat'
+      address: "Main Ring Road, Manjalpur, Vadodara, Gujarat"
     },
     latitude: 22.2858,
     longitude: 73.1974,
-    address: 'Main Ring Road, Manjalpur, Vadodara, Gujarat',
-    city: 'Vadodara',
+    address: "Main Ring Road, Manjalpur, Vadodara, Gujarat",
+    city: "Vadodara",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/luxury-room-1.jpeg',
-      '/room-images/room1.jpg',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
-        id: 'med-r3-1',
-        type: 'image',
-        url: '/room-images/luxury-room-1.jpeg',
-        caption: 'Master Bedroom with Balcony View',
-        category: 'Rooms'
+        id: "med-r3-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        caption: "Master Bedroom with Balcony View",
+        category: "Rooms"
       },
       {
-        id: 'med-r3-2',
-        type: 'image',
-        url: '/room-images/room1.jpg',
-        caption: 'Second Bedroom & Seating',
-        category: 'Rooms'
+        id: "med-r3-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        caption: "Spacious 2BHK Living Room",
+        category: "Rooms"
       },
       {
-        id: 'med-r3-vid',
-        type: 'video',
-        url: '/room-images/room-video-1.mp4',
-        thumbnail: '/room-images/luxury-room-1.jpeg',
-        caption: 'Manjalpur 2BHK Video Walkthrough',
-        category: 'Videos'
+        id: "med-r3-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=80",
+        caption: "Second Bedroom",
+        category: "Rooms"
       }
     ],
-    amenities: ['Balcony', 'Lift Facility', 'Gated Security', 'Covered Parking', 'Modular Kitchen', 'Power Backup'],
-    type: 'Double',
-    category: 'Urban',
+    amenities: [
+      "Balcony",
+      "Lift Facility",
+      "Gated Security",
+      "Covered Parking",
+      "Modular Kitchen",
+      "Power Backup"
+    ],
+    type: "Double",
+    category: "Urban",
     rating: 4.9,
     reviewCount: 31,
     reviews: []
   },
   {
-    id: 'r4',
-    title: 'Modern Studio Apartment in Navrangpura',
-    description: 'Sleek and self-contained studio flat in the heart of Navrangpura. Designed for young professionals with open-plan layout, workstation desk, mini-fridge space, smart TV, and attached bathroom.',
+    id: "r4",
+    title: "Modern Studio Apartment in Navrangpura",
+    description: "Sleek and self-contained studio flat in the heart of Navrangpura. Designed for young professionals with open-plan layout, workstation desk, mini-fridge space, smart TV, and attached bathroom.",
     price: 12500,
     location: {
       lat: 23.0365,
       lng: 72.5611,
-      address: 'Commerce College Road, Navrangpura, Ahmedabad, Gujarat'
+      address: "Commerce College Road, Navrangpura, Ahmedabad, Gujarat"
     },
     latitude: 23.0365,
     longitude: 72.5611,
-    address: 'Commerce College Road, Navrangpura, Ahmedabad, Gujarat',
-    city: 'Ahmedabad',
+    address: "Commerce College Road, Navrangpura, Ahmedabad, Gujarat",
+    city: "Ahmedabad",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/luxury-room-1.jpeg',
-      '/room-images/room1.jpg',
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
-    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
-        id: 'med-r4-1',
-        type: 'image',
-        url: '/room-images/luxury-room-1.jpeg',
-        caption: 'Studio Living & Bed Area',
-        category: 'Rooms'
+        id: "med-r4-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+        caption: "Studio Living & Bed Area",
+        category: "Rooms"
       },
       {
-        id: 'med-r4-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: '/room-images/luxury-room-1.jpeg',
-        caption: 'Studio Walkthrough Video Tour',
-        category: 'Videos'
+        id: "med-r4-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        caption: "Open Layout & Lounge Corner",
+        category: "Rooms"
       }
     ],
-    amenities: ['Hi-Speed WiFi', 'Smart TV', 'Air Conditioning', 'Workstation', 'Attached Bath', 'Geyser'],
-    type: 'Suite',
-    category: 'Urban',
+    amenities: [
+      "Hi-Speed WiFi",
+      "Smart TV",
+      "Air Conditioning",
+      "Workstation",
+      "Attached Bath",
+      "Geyser"
+    ],
+    type: "Suite",
+    category: "Urban",
     rating: 4.6,
     reviewCount: 15,
     reviews: []
   },
   {
-    id: 'r5',
-    title: 'Budget Twin Sharing Student Room',
-    description: 'Affordable and neat twin-sharing room for college students. Two separate beds, individual study desks, personal wardrobes, high-speed WiFi, and daily housekeeping included in Infocity.',
+    id: "r5",
+    title: "Budget Twin Sharing Student Room",
+    description: "Affordable and neat twin-sharing room for college students. Two separate beds, individual study desks, personal wardrobes, high-speed WiFi, and daily housekeeping included in Infocity.",
     price: 4800,
     location: {
       lat: 23.1924,
       lng: 72.6289,
-      address: 'Near Infocity Hub, Gandhinagar, Gujarat'
+      address: "Near Infocity Hub, Gandhinagar, Gujarat"
     },
     latitude: 23.1924,
     longitude: 72.6289,
-    address: 'Near Infocity Hub, Gandhinagar, Gujarat',
-    city: 'Gandhinagar',
+    address: "Near Infocity Hub, Gandhinagar, Gujarat",
+    city: "Gandhinagar",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/room1.jpg',
-      '/room-images/luxury-room-1.jpeg',
-      'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-videos/13394638_1080_1920_30fps.mp4',
-    videoThumbnail: '/room-images/room1.jpg',
     mediaGallery: [
       {
-        id: 'med-r5-1',
-        type: 'image',
-        url: '/room-images/room1.jpg',
-        caption: 'Twin Sharing Student Room',
-        category: 'Rooms'
+        id: "med-r5-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80",
+        caption: "Twin Sharing Student Beds",
+        category: "Rooms"
       },
       {
-        id: 'med-r5-vid',
-        type: 'video',
-        url: '/room-videos/13394638_1080_1920_30fps.mp4',
-        thumbnail: '/room-images/room1.jpg',
-        caption: 'Twin Sharing Room Video Tour',
-        category: 'Videos'
+        id: "med-r5-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80",
+        caption: "Individual Study Desk Area",
+        category: "Rooms"
       }
     ],
-    amenities: ['WiFi Included', 'Individual Desks', 'Daily Housekeeping', 'RO Water', 'CCTV Security'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "WiFi Included",
+      "Individual Desks",
+      "Daily Housekeeping",
+      "RO Water",
+      "CCTV Security"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.5,
     reviewCount: 12,
     reviews: []
   },
   {
-    id: 'r6',
-    title: 'Cozy 1RK Flat with Balcony in Vesu',
-    description: 'Compact and peaceful 1RK flat with attached balcony. Comes with double bed, ceiling fan, wardrobe, tiled flooring, and natural breeze. Close to BRTS stop and shopping mart.',
+    id: "r6",
+    title: "Cozy 1RK Flat with Balcony in Vesu",
+    description: "Compact and peaceful 1RK flat with attached balcony. Comes with double bed, ceiling fan, wardrobe, tiled flooring, and natural breeze. Close to BRTS stop and shopping mart.",
     price: 8500,
     location: {
       lat: 21.1418,
       lng: 72.7709,
-      address: 'VIP Road, Vesu, Surat, Gujarat'
+      address: "VIP Road, Vesu, Surat, Gujarat"
     },
     latitude: 21.1418,
     longitude: 72.7709,
-    address: 'VIP Road, Vesu, Surat, Gujarat',
-    city: 'Surat',
+    address: "VIP Road, Vesu, Surat, Gujarat",
+    city: "Surat",
     status: RoomStatus.AVAILABLE,
     images: [
-      '/room-images/luxury-room-1.jpeg',
-      '/room-images/room1.jpg',
-      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=800&q=80'
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-videos/12684293_1920_1080_60fps.mp4',
-    videoThumbnail: '/room-images/luxury-room-1.jpeg',
     mediaGallery: [
       {
-        id: 'med-r6-1',
-        type: 'image',
-        url: '/room-images/luxury-room-1.jpeg',
-        caption: 'Cozy 1RK Main Room',
-        category: 'Rooms'
+        id: "med-r6-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        caption: "Cozy 1RK Main Room",
+        category: "Rooms"
       },
       {
-        id: 'med-r6-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: '/room-images/luxury-room-1.jpeg',
-        caption: '1RK Balcony Flat Video Tour',
-        category: 'Videos'
+        id: "med-r6-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        caption: "Balcony View & Sunshine",
+        category: "Rooms"
       }
     ],
-    amenities: ['Private Balcony', 'Ceiling Fan', 'Attached Bath', 'BRTS Nearby', 'Bike Parking'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "Private Balcony",
+      "Ceiling Fan",
+      "Attached Bath",
+      "BRTS Nearby",
+      "Bike Parking"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.7,
     reviewCount: 18,
     reviews: []
   },
   {
-    id: 'r7',
-    title: 'Modern Sea-Facing Studio in Bandra West',
-    description: 'Chic designer studio with panoramic Arabian sea view in prime Bandra West. Equipped with king bed, modular pantry, smart TV, split AC, and 24x7 security. Walking distance from Carter Road promenade.',
+    id: "r7",
+    title: "Modern Sea-Facing Studio in Bandra West",
+    description: "Chic designer studio with panoramic Arabian sea view in prime Bandra West. Equipped with king bed, modular pantry, smart TV, split AC, and 24x7 security. Walking distance from Carter Road promenade.",
     price: 28000,
     location: {
       lat: 19.0596,
       lng: 72.8295,
-      address: 'Carter Road, Bandra West, Mumbai, Maharashtra'
+      address: "Carter Road, Bandra West, Mumbai, Maharashtra"
     },
     latitude: 19.0596,
     longitude: 72.8295,
-    address: 'Carter Road, Bandra West, Mumbai, Maharashtra',
-    city: 'Mumbai',
+    address: "Carter Road, Bandra West, Mumbai, Maharashtra",
+    city: "Mumbai",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r7-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Sea Facing Studio Suite',
-        category: 'Rooms'
+        id: "med-r7-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+        caption: "Sea Facing Studio Suite",
+        category: "Rooms"
       },
       {
-        id: 'med-r7-2',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Bedroom Living View',
-        category: 'Rooms'
-      },
-      {
-        id: 'med-r7-vid',
-        type: 'video',
-        url: '/room-videos/13394638_1080_1920_30fps.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Bandra Sea-Facing Studio Video Tour',
-        category: 'Videos'
+        id: "med-r7-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        caption: "Bedroom Living View",
+        category: "Rooms"
       }
     ],
-    amenities: ['Sea View', 'Split AC', 'Smart TV', 'High Speed WiFi', 'Modular Pantry', '24x7 Security'],
-    type: 'Suite',
-    category: 'Luxury',
+    amenities: [
+      "Sea View",
+      "Split AC",
+      "Smart TV",
+      "High Speed WiFi",
+      "Modular Pantry",
+      "24x7 Security"
+    ],
+    type: "Suite",
+    category: "Luxury",
     rating: 4.9,
     reviewCount: 42,
     reviews: [
       {
-        id: 'rev7',
-        userId: 'u2',
-        userName: 'Aakash Singhania',
-        userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256',
+        id: "rev7",
+        userId: "u2",
+        userName: "Aakash Singhania",
+        userAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256",
         rating: 5,
-        comment: 'Unbeatable location on Carter Road. Sunset views are phenomenal.',
-        date: '2026-09-02'
+        comment: "Unbeatable location on Carter Road. Sunset views are phenomenal.",
+        date: "2026-09-02"
       }
     ]
   },
   {
-    id: 'r8',
-    title: 'Executive 1BHK in Koramangala 4th Block',
-    description: 'Fully furnished premium 1BHK in startup hotspot Koramangala. Includes dedicated workstation with ergonomic chair, high-speed fiber internet, split AC, modular kitchen, and power backup.',
+    id: "r8",
+    title: "Executive 1BHK in Koramangala 4th Block",
+    description: "Fully furnished premium 1BHK in startup hotspot Koramangala. Includes dedicated workstation with ergonomic chair, high-speed fiber internet, split AC, modular kitchen, and power backup.",
     price: 19500,
     location: {
       lat: 12.9352,
       lng: 77.6245,
-      address: '80 Feet Road, Koramangala 4th Block, Bengaluru, Karnataka'
+      address: "80 Feet Road, Koramangala 4th Block, Bengaluru, Karnataka"
     },
     latitude: 12.9352,
     longitude: 77.6245,
-    address: '80 Feet Road, Koramangala 4th Block, Bengaluru, Karnataka',
-    city: 'Bengaluru',
+    address: "80 Feet Road, Koramangala 4th Block, Bengaluru, Karnataka",
+    city: "Bengaluru",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r8-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Koramangala Executive 1BHK',
-        category: 'Rooms'
+        id: "med-r8-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+        caption: "Koramangala Executive 1BHK",
+        category: "Rooms"
       },
       {
-        id: 'med-r8-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Koramangala 1BHK Video Walkthrough',
-        category: 'Videos'
+        id: "med-r8-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        caption: "Bedroom with Workstation",
+        category: "Rooms"
       }
     ],
-    amenities: ['Fiber WiFi', 'Workstation', 'Power Backup', 'Split AC', 'Modular Kitchen', 'Lift'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "Fiber WiFi",
+      "Workstation",
+      "Power Backup",
+      "Split AC",
+      "Modular Kitchen",
+      "Lift"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.8,
     reviewCount: 36,
     reviews: []
   },
   {
-    id: 'r9',
-    title: 'Spacious 2BHK with Balcony on Kalawad Road',
-    description: 'Beautiful 2BHK flat with open balconies in a prestigious society on Kalawad Road. Ventilated rooms, covered car parking, lift, water purifier, and round-the-clock security.',
+    id: "r9",
+    title: "Spacious 2BHK with Balcony on Kalawad Road",
+    description: "Beautiful 2BHK flat with open balconies in a prestigious society on Kalawad Road. Ventilated rooms, covered car parking, lift, water purifier, and round-the-clock security.",
     price: 12000,
     location: {
       lat: 22.2818,
       lng: 70.7758,
-      address: 'Near KKV Hall, Kalawad Road, Rajkot, Gujarat'
+      address: "Near KKV Hall, Kalawad Road, Rajkot, Gujarat"
     },
     latitude: 22.2818,
     longitude: 70.7758,
-    address: 'Near KKV Hall, Kalawad Road, Rajkot, Gujarat',
-    city: 'Rajkot',
+    address: "Near KKV Hall, Kalawad Road, Rajkot, Gujarat",
+    city: "Rajkot",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r9-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Kalawad Road 2BHK Main Living',
-        category: 'Rooms'
+        id: "med-r9-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        caption: "Kalawad Road 2BHK Main Living",
+        category: "Rooms"
       },
       {
-        id: 'med-r9-vid',
-        type: 'video',
-        url: '/room-videos/room-video-1.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Rajkot 2BHK Flat Video Tour',
-        category: 'Videos'
+        id: "med-r9-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80",
+        caption: "Master Bedroom",
+        category: "Rooms"
       }
     ],
-    amenities: ['Private Balcony', 'Covered Parking', 'Lift', 'RO Water', 'CCTV Security'],
-    type: 'Double',
-    category: 'Urban',
+    amenities: [
+      "Private Balcony",
+      "Covered Parking",
+      "Lift",
+      "RO Water",
+      "CCTV Security"
+    ],
+    type: "Double",
+    category: "Urban",
     rating: 4.7,
     reviewCount: 22,
     reviews: []
   },
   {
-    id: 'r10',
-    title: 'Beachside 1BHK Villa Apartment in Calangute',
-    description: 'Sunny and breezy 1BHK apartment just 300 meters from Calangute beach. Features private balcony with palm views, pool access, split AC, and kitchenette. Perfect for relaxing holidays or remote work.',
+    id: "r10",
+    title: "Beachside 1BHK Villa Apartment in Calangute",
+    description: "Sunny and breezy 1BHK apartment just 300 meters from Calangute beach. Features private balcony with palm views, pool access, split AC, and kitchenette. Perfect for relaxing holidays or remote work.",
     price: 16500,
     location: {
       lat: 15.5439,
       lng: 73.7553,
-      address: 'Holiday Street, Calangute Beach Road, Goa'
+      address: "Holiday Street, Calangute Beach Road, Goa"
     },
     latitude: 15.5439,
     longitude: 73.7553,
-    address: 'Holiday Street, Calangute Beach Road, Goa',
-    city: 'Goa',
+    address: "Holiday Street, Calangute Beach Road, Goa",
+    city: "Goa",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r10-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Calangute Beachside Villa',
-        category: 'Rooms'
+        id: "med-r10-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+        caption: "Calangute Beachside Villa",
+        category: "Rooms"
       },
       {
-        id: 'med-r10-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Goa Villa Video Tour',
-        category: 'Videos'
+        id: "med-r10-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+        caption: "Swimming Pool & Sun Deck",
+        category: "Amenities"
       }
     ],
-    amenities: ['Pool Access', 'Beach Walking Distance', 'Air Conditioning', 'WiFi', 'Balcony', 'Parking'],
-    type: 'Suite',
-    category: 'Beach',
+    amenities: [
+      "Pool Access",
+      "Beach Walking Distance",
+      "Air Conditioning",
+      "WiFi",
+      "Balcony",
+      "Parking"
+    ],
+    type: "Suite",
+    category: "Beach",
     rating: 4.9,
     reviewCount: 51,
     reviews: []
   },
   {
-    id: 'r11',
-    title: 'Boutique Heritage Studio in C-Scheme',
-    description: 'Elegantly furnished heritage studio in central Jaipur. Traditional Rajasthani aesthetics combined with contemporary conveniences: king size bed, split AC, high-speed WiFi, and peaceful courtyard.',
+    id: "r11",
+    title: "Boutique Heritage Studio in C-Scheme",
+    description: "Elegantly furnished heritage studio in central Jaipur. Traditional Rajasthani aesthetics combined with contemporary conveniences: king size bed, split AC, high-speed WiFi, and peaceful courtyard.",
     price: 13000,
     location: {
       lat: 26.9124,
       lng: 75.7873,
-      address: 'Subhash Marg, C-Scheme, Jaipur, Rajasthan'
+      address: "Subhash Marg, C-Scheme, Jaipur, Rajasthan"
     },
     latitude: 26.9124,
     longitude: 75.7873,
-    address: 'Subhash Marg, C-Scheme, Jaipur, Rajasthan',
-    city: 'Jaipur',
+    address: "Subhash Marg, C-Scheme, Jaipur, Rajasthan",
+    city: "Jaipur",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7ede433c4ef3?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r11-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Jaipur Heritage Studio',
-        category: 'Rooms'
+        id: "med-r11-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80",
+        caption: "Jaipur Heritage Studio",
+        category: "Rooms"
       },
       {
-        id: 'med-r11-vid',
-        type: 'video',
-        url: '/room-videos/13394638_1080_1920_30fps.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Heritage Studio Walkthrough',
-        category: 'Videos'
+        id: "med-r11-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+        caption: "Courtyard & Traditional Details",
+        category: "Amenities"
       }
     ],
-    amenities: ['Heritage Interior', 'Split AC', 'Fast WiFi', 'Courtyard Access', 'Geyser', 'Car Parking'],
-    type: 'Suite',
-    category: 'Historic',
+    amenities: [
+      "Heritage Interior",
+      "Split AC",
+      "Fast WiFi",
+      "Courtyard Access",
+      "Geyser",
+      "Car Parking"
+    ],
+    type: "Suite",
+    category: "Historic",
     rating: 4.8,
     reviewCount: 29,
     reviews: []
   },
   {
-    id: 'r12',
-    title: 'Peaceful 1BHK in Koregaon Park Lane 7',
-    description: 'Lush green surroundings in prime Koregaon Park. Tastefully furnished 1BHK with spacious bedroom, attached balcony overlooking tree-lined street, modern bath fittings, and parking.',
+    id: "r12",
+    title: "Peaceful 1BHK in Koregaon Park Lane 7",
+    description: "Lush green surroundings in prime Koregaon Park. Tastefully furnished 1BHK with spacious bedroom, attached balcony overlooking tree-lined street, modern bath fittings, and parking.",
     price: 18000,
     location: {
       lat: 18.5362,
-      lng: 73.8940,
-      address: 'Lane 7, Koregaon Park, Pune, Maharashtra'
+      lng: 73.894,
+      address: "Lane 7, Koregaon Park, Pune, Maharashtra"
     },
     latitude: 18.5362,
-    longitude: 73.8940,
-    address: 'Lane 7, Koregaon Park, Pune, Maharashtra',
-    city: 'Pune',
+    longitude: 73.894,
+    address: "Lane 7, Koregaon Park, Pune, Maharashtra",
+    city: "Pune",
     status: RoomStatus.AVAILABLE,
     images: [
-      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80'
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80"
     ],
-    videoUrl: '/room-images/room-video-1.mp4',
-    videoThumbnail: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
     mediaGallery: [
       {
-        id: 'med-r12-1',
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Koregaon Park 1BHK',
-        category: 'Rooms'
+        id: "med-r12-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        caption: "Koregaon Park 1BHK Bedroom",
+        category: "Rooms"
       },
       {
-        id: 'med-r12-vid',
-        type: 'video',
-        url: '/room-videos/12684293_1920_1080_60fps.mp4',
-        thumbnail: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Pune 1BHK Video Walkthrough',
-        category: 'Videos'
+        id: "med-r12-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=80",
+        caption: "Tree-lined Street Balcony View",
+        category: "Rooms"
       }
     ],
-    amenities: ['Green Balcony', 'Split AC', 'Hi-Speed WiFi', 'Covered Parking', 'Gated Security'],
-    type: 'Single',
-    category: 'Urban',
+    amenities: [
+      "Green Balcony",
+      "Split AC",
+      "Hi-Speed WiFi",
+      "Covered Parking",
+      "Gated Security"
+    ],
+    type: "Single",
+    category: "Urban",
     rating: 4.85,
     reviewCount: 38,
     reviews: []

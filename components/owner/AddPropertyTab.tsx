@@ -112,18 +112,11 @@ const AddPropertyTab: React.FC = () => {
         uploadedImages = await uploadFiles(images);
       }
 
-      let finalVideoUrl = videoUrlInput.trim();
-      if (!finalVideoUrl && videoFile) {
-        const uploadedVideos = await uploadFiles([videoFile]);
-        finalVideoUrl = uploadedVideos[0] || resolveVideoUrl(videoFile.name);
-      }
-      if (!finalVideoUrl) {
-        finalVideoUrl = '/room-videos/12684293_1920_1080_60fps.mp4';
-      }
+      const finalVideoUrl = videoUrlInput.trim() || undefined;
 
       const finalImages = uploadedImages.length > 0 
         ? uploadedImages 
-        : ['/room-images/luxury-room-1.jpeg', '/room-images/room1.jpg', '/room-images/room-exterior-1.jpeg'];
+        : ['https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80'];
 
       const newRoomId = `prop-${Date.now()}`;
       const newRoom: Room = {
@@ -153,14 +146,14 @@ const AddPropertyTab: React.FC = () => {
             caption: `${title || 'Room'} Photo ${i + 1}`,
             category: (i === 0 ? 'Rooms' : i === 1 ? 'Rooms' : 'Amenities') as any
           })),
-          {
+          ...(finalVideoUrl ? [{
             id: `med-${newRoomId}-vid`,
             type: 'video' as const,
             url: finalVideoUrl,
             thumbnail: finalImages[0],
-            caption: `${title || 'Room'} HD Video Walkthrough`,
+            caption: `${title || 'Room'} Video Walkthrough`,
             category: 'Videos' as any
-          }
+          }] : [])
         ],
         amenities: ['Hi-Speed WiFi', 'Split AC', 'Modular Kitchen', 'Geyser', 'Wardrobe', 'Bike Parking'],
         category: 'Urban',

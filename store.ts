@@ -45,13 +45,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const getInitialRooms = () => {
     let dynamicStored: Room[] = [];
     try {
-      const raw = localStorage.getItem('stayhub_rooms_v2') || localStorage.getItem('stayhub_rooms_v1') || localStorage.getItem('stayhub_dynamic_rooms_v1');
+      const raw = localStorage.getItem('stayhub_rooms_v3');
       if (raw) dynamicStored = JSON.parse(raw);
     } catch {}
     const map = new Map<string, Room>();
-    // 1. Populate latest mock rooms with newest photos & videos
     mockRooms.forEach(r => map.set(r.id, r));
-    // 2. Overlay dynamic stored rooms, preserving mock rooms' updated photos/videos
     dynamicStored.forEach(r => {
       const existingMock = mockRooms.find(m => m.id === r.id);
       if (existingMock) {
@@ -63,7 +61,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           mediaGallery: existingMock.mediaGallery
         });
       } else {
-        map.set(r.id, r);
+        // Only keep dynamic room if images are valid web URLs or Base64 data
+        const sanitizedImages = (r.images || []).filter(img => !img.startsWith('/room-') && !img.startsWith('/properties/'));
+        map.set(r.id, {
+          ...r,
+          images: sanitizedImages.length > 0 ? sanitizedImages : ['https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80'],
+          videoUrl: r.videoUrl && (r.videoUrl.startsWith('http://') || r.videoUrl.startsWith('https://')) ? r.videoUrl : undefined
+        });
       }
     });
     return Array.from(map.values());
@@ -78,8 +82,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       newRooms.forEach(r => map.set(r.id, r));
       const combined = Array.from(map.values());
       try {
-        localStorage.setItem('stayhub_rooms_v2', JSON.stringify(combined));
-        localStorage.setItem('stayhub_rooms_v1', JSON.stringify(combined));
+        localStorage.setItem('stayhub_rooms_v3', JSON.stringify(combined));
       } catch {}
       return combined;
     });

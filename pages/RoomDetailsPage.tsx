@@ -34,9 +34,9 @@ const RoomDetailsPage: React.FC = () => {
 
   if (!room) return <div className="p-20 text-center text-zinc-400">Property not found.</div>;
 
-  const defaultVideoUrl = "/room-videos/12684293_1920_1080_60fps.mp4";
+  const fallbackImg = "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80";
 
-  // Build complete gallery combining all room photos and videos dynamically
+  // Build complete gallery from room photos, and add video only if room has a valid videoUrl
   const galleryItems: MediaItem[] = room.mediaGallery && room.mediaGallery.length > 0
     ? [
         ...room.mediaGallery,
@@ -44,7 +44,7 @@ const RoomDetailsPage: React.FC = () => {
           id: `med-${room.id}-vid`,
           type: 'video' as const,
           url: room.videoUrl,
-          thumbnail: room.images?.[0] || '/room-images/luxury-room-1.jpeg',
+          thumbnail: room.images?.[0] || fallbackImg,
           caption: `${room.title} HD Video Walkthrough`,
           category: 'Videos' as const
         }] : [])
@@ -61,18 +61,18 @@ const RoomDetailsPage: React.FC = () => {
           : [{
               id: `med-${room.id}-main`,
               type: 'image' as const,
-              url: '/room-images/luxury-room-1.jpeg',
+              url: fallbackImg,
               caption: `${room.title} Main View`,
               category: 'Rooms' as any
             }]),
-        {
+        ...(room.videoUrl ? [{
           id: `med-${room.id}-vid`,
           type: 'video' as const,
-          url: room.videoUrl || defaultVideoUrl,
-          thumbnail: room.images?.[0] || '/room-images/luxury-room-1.jpeg',
+          url: room.videoUrl,
+          thumbnail: room.images?.[0] || fallbackImg,
           caption: `${room.title} HD Video Walkthrough`,
           category: 'Videos' as const
-        }
+        }] : [])
       ];
 
   const imageItems = galleryItems.filter(i => i.type === 'image');
@@ -173,13 +173,15 @@ const RoomDetailsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4 text-sm font-bold">
-            <button
-              onClick={() => openGallery(videoIndex >= 0 ? videoIndex : 0)}
-              className="px-5 py-2.5 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 flex items-center gap-2"
-            >
-              <span>🎥</span>
-              <span>Watch Video Tour</span>
-            </button>
+            {room.videoUrl && (
+              <button
+                onClick={() => openGallery(videoIndex >= 0 ? videoIndex : 0)}
+                className="px-5 py-2.5 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 flex items-center gap-2"
+              >
+                <span>🎥</span>
+                <span>Watch Video Tour</span>
+              </button>
+            )}
             <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
               <span className="text-amber-500 text-base">★</span>
               <span className="text-zinc-900 font-black">{room.rating}</span>
@@ -189,7 +191,7 @@ const RoomDetailsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* TripAdvisor Hero Collage Grid (Main Photo First on Left, Video & Angles on Bottom Right) */}
+      {/* TripAdvisor Hero Collage Grid (Main Photo First on Left, Additional Photos/Video on Right) */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-12 h-[460px] rounded-3xl overflow-hidden shadow-xl border border-zinc-200/80 bg-zinc-900 relative">
         {/* Main Featured First Photo (Left 2 columns) */}
         <div 
@@ -197,7 +199,7 @@ const RoomDetailsPage: React.FC = () => {
           className="md:col-span-2 relative h-full cursor-pointer group overflow-hidden"
         >
           <img 
-            src={imageItems[0]?.url || room.images?.[0] || '/room-images/luxury-room-1.jpeg'} 
+            src={imageItems[0]?.url || room.images?.[0] || fallbackImg} 
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
             alt="Main Featured Room Photo" 
           />
@@ -210,14 +212,14 @@ const RoomDetailsPage: React.FC = () => {
           </span>
         </div>
 
-        {/* Right 2 columns (3 grid photo thumbnails + 1 Video Card at bottom right) */}
+        {/* Right 2 columns (3 grid photo thumbnails + 1 Video/Photo Card at bottom right) */}
         <div className="md:col-span-2 grid grid-cols-2 gap-3 h-full">
           {/* Photo 2 */}
           <div 
             onClick={() => openGallery(1)}
             className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950"
           >
-            <img src={imageItems[1]?.url || imageItems[0]?.url || '/room-images/room1.jpg'} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Room Angle 1" />
+            <img src={imageItems[1]?.url || imageItems[0]?.url || fallbackImg} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Room Angle 1" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
           </div>
 
@@ -226,7 +228,7 @@ const RoomDetailsPage: React.FC = () => {
             onClick={() => openGallery(2)}
             className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950"
           >
-            <img src={imageItems[2]?.url || imageItems[0]?.url || '/room-images/room-exterior-1.jpeg'} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Room Angle 2" />
+            <img src={imageItems[2]?.url || imageItems[0]?.url || fallbackImg} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Room Angle 2" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
           </div>
 
@@ -235,36 +237,46 @@ const RoomDetailsPage: React.FC = () => {
             onClick={() => openGallery(3)}
             className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950"
           >
-            <img src={imageItems[3]?.url || imageItems[1]?.url || imageItems[0]?.url || '/room-images/luxury-room-1.jpeg'} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Amenity Photo" />
+            <img src={imageItems[3]?.url || imageItems[1]?.url || imageItems[0]?.url || fallbackImg} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Amenity Photo" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
           </div>
 
-          {/* Video Walkthrough Card (Bottom Right Side) */}
-          <div 
-            onClick={() => openGallery(videoIndex >= 0 ? videoIndex : 0)}
-            className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950 border border-indigo-500/30"
-          >
-            <img src={room.videoThumbnail || imageItems[0]?.url || '/room-images/luxury-room-1.jpeg'} className="w-full h-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-105" alt="Video Tour Preview" />
-            <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-black/60 to-black/30 flex flex-col items-center justify-center p-3 text-center z-10">
-              <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xl group-hover:scale-110 transition-transform mb-1 border border-indigo-400/40">
-                ▶
+          {/* 4th Slot: Video Card if room has videoUrl, or 4th photo */}
+          {room.videoUrl ? (
+            <div 
+              onClick={() => openGallery(videoIndex >= 0 ? videoIndex : 0)}
+              className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950 border border-indigo-500/30"
+            >
+              <img src={room.videoThumbnail || imageItems[0]?.url || fallbackImg} className="w-full h-full object-cover opacity-60 transition-transform duration-500 group-hover:scale-105" alt="Video Tour Preview" />
+              <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-black/60 to-black/30 flex flex-col items-center justify-center p-3 text-center z-10">
+                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm shadow-xl group-hover:scale-110 transition-transform mb-1 border border-indigo-400/40">
+                  ▶
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-indigo-300">Room Video Tour</span>
+                <span className="text-[9px] text-zinc-400 font-bold">Click to Play HD Video</span>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-300">Room Video Tour</span>
-              <span className="text-[9px] text-zinc-400 font-bold">Click to Play HD Video</span>
+              <span className="absolute top-2 left-2 bg-indigo-600 text-white text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm z-20">
+                🎥 Video
+              </span>
             </div>
-            <span className="absolute top-2 left-2 bg-indigo-600 text-white text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm z-20">
-              🎥 Video
-            </span>
-          </div>
+          ) : (
+            <div 
+              onClick={() => openGallery(4 < galleryItems.length ? 4 : 0)}
+              className="relative h-full overflow-hidden cursor-pointer group rounded-xl bg-zinc-950"
+            >
+              <img src={imageItems[4]?.url || imageItems[0]?.url || fallbackImg} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Room View" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+            </div>
+          )}
         </div>
 
-        {/* Floating TripAdvisor All Photos & Videos Badge */}
+        {/* Floating TripAdvisor All Photos Badge */}
         <button
           onClick={() => openGallery(0)}
           className="absolute bottom-5 right-5 z-20 px-5 py-2.5 bg-zinc-950/90 hover:bg-white hover:text-zinc-950 text-white backdrop-blur-md rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl transition-all border border-white/20 flex items-center gap-2 active:scale-95"
         >
           <span>📷</span>
-          <span>View All Photos & Videos ({galleryItems.length})</span>
+          <span>View All Photos ({galleryItems.length})</span>
         </button>
       </div>
 

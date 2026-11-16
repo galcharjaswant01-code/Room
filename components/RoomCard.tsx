@@ -24,8 +24,7 @@ const RoomCard: React.FC<{
     }).format(price);
   };
 
-  const fallbackImg = "/room-images/luxury-room-1.jpeg";
-  const defaultVideoUrl = "/room-videos/12684293_1920_1080_60fps.mp4";
+  const fallbackImg = "https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80";
 
   const isNew = (() => {
     if (!room.createdAt) return false;
@@ -44,9 +43,9 @@ const RoomCard: React.FC<{
       onClick={onCardClick}
       onMouseEnter={onCardMouseEnter}
     >
-      {showVideoModal && (
+      {showVideoModal && room.videoUrl && (
         <VideoTourModal 
-          videoUrl={room.videoUrl || defaultVideoUrl}
+          videoUrl={room.videoUrl}
           title={room.title}
           roomAddress={room.location.address}
           onClose={() => setShowVideoModal(false)}
@@ -75,14 +74,16 @@ const RoomCard: React.FC<{
           <svg className="w-4 h-4" fill={isWishlisted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
         </button>
 
-        <button 
-          onClick={(e) => { e.preventDefault(); setShowVideoModal(true); }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white shadow-xl transition-all hover:bg-indigo-700 hover:scale-105 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 z-10 flex items-center gap-2 border border-indigo-500/30"
-          title="Play HD Room Video Walkthrough"
-        >
-          <span className="text-xs">🎥</span>
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] whitespace-nowrap">Play Video Tour</span>
-        </button>
+        {room.videoUrl && (
+          <button 
+            onClick={(e) => { e.preventDefault(); setShowVideoModal(true); }}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white shadow-xl transition-all hover:bg-indigo-700 hover:scale-105 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 z-10 flex items-center gap-2 border border-indigo-500/30"
+            title="Play HD Room Video Walkthrough"
+          >
+            <span className="text-xs">🎥</span>
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] whitespace-nowrap">Play Video Tour</span>
+          </button>
+        )}
 
         <div className="absolute top-4 left-4 flex items-center gap-2">
           {isNew && (
