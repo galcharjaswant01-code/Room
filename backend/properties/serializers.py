@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Room, RoomImage, Facility, Review
+from .models import Room, RoomImage, RoomMedia, Facility, Review
 
 class FacilitySerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,6 +11,11 @@ class RoomImageSerializer(serializers.ModelSerializer):
         model = RoomImage
         fields = ['id', 'image', 'is_primary']
 
+class RoomMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomMedia
+        fields = ['id', 'media_type', 'url', 'thumbnail', 'source_url', 'attribution', 'caption', 'is_primary', 'created_at']
+
 class ReviewSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
     
@@ -21,6 +26,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     images = RoomImageSerializer(many=True, read_only=True)
+    media_items = RoomMediaSerializer(many=True, read_only=True)
     facilities = FacilitySerializer(many=True, read_only=True)
     facilities_ids = serializers.PrimaryKeyRelatedField(
         queryset=Facility.objects.all(), source='facilities', many=True, write_only=True, required=False
@@ -31,8 +37,10 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ['id', 'owner', 'owner_name', 'title', 'description', 'price', 'location', 
-                  'address', 'city', 'latitude', 'longitude', 'room_type', 'is_available', 'is_active', 
-                  'facilities', 'facilities_ids', 'images', 'reviews', 'created_at']
+                  'address', 'locality', 'city', 'latitude', 'longitude', 'room_type', 
+                  'phone', 'availability', 'is_available', 'is_active',
+                  'source', 'source_listing_id', 'source_url', 'last_synced',
+                  'facilities', 'facilities_ids', 'images', 'media_items', 'reviews', 'created_at']
         read_only_fields = ['owner', 'created_at']
 
 from .models import Favorite

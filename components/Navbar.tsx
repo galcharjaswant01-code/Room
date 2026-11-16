@@ -15,6 +15,7 @@ const Navbar: React.FC = () => {
     { path: '/client', label: '📅 My Bookings', roles: [UserRole.GUEST] },
     { path: '/wishlist', label: '❤️ Wishlist', roles: [UserRole.GUEST], count: wishlist.length },
     { path: '/owner', label: '🏢 Owner Dashboard', roles: [UserRole.OWNER] },
+    { path: '/admin', label: '⚡ Admin Sync', roles: [UserRole.ADMIN, UserRole.OWNER] },
   ];
 
   const visibleLinks = navLinks.filter(link => 

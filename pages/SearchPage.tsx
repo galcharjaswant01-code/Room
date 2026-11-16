@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import RoomCard from '../components/RoomCard';
 import RoomMap, { getRoomCoordinates } from '../components/RoomMap';
-import { Filter, Search, MapPin, Navigation, Map, List, Eye } from 'lucide-react';
+import { Filter, Search, MapPin, Navigation, Map, List, Eye, RefreshCw } from 'lucide-react';
 import {
   searchLocationSuggestions,
   geocodeLocation,
@@ -12,7 +12,6 @@ import {
   LocationSuggestion,
 } from '../services/locationService';
 import { fetchProperties } from '../services/propertyService';
-import { generateRoomsForLocation } from '../services/dynamicRoomGenerator';
 import { useApp } from '../store';
 import { Room } from '../types';
 
@@ -20,7 +19,7 @@ const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { rooms: storeRooms, addRooms } = useApp();
 
-  const queryLocation = searchParams.get('location') || '';
+  const queryLocation = searchParams.get('location') || 'Palanpur, Gujarat';
   const queryBudget = searchParams.get('budget') || '';
   const queryType = searchParams.get('type') || '';
   const queryLat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : undefined;
@@ -29,24 +28,25 @@ const SearchPage: React.FC = () => {
   const [location, setLocation] = useState(queryLocation);
   const [budget, setBudget] = useState(queryBudget);
   const [roomType, setRoomType] = useState(queryType);
-  const [radius, setRadius] = useState<number>(10);
+  const [selectedArea, setSelectedArea] = useState<string>('All');
+  const [radius, setRadius] = useState<number>(15);
 
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Map & Location States
-  // Default center: Vadodara coordinates [22.3072, 73.1812]
+  // Default center: Palanpur coordinates [24.1724, 72.4346]
   const [mapCenter, setMapCenter] = useState<[number, number]>([
-    queryLat || 22.3072,
-    queryLng || 73.1812,
+    queryLat || 24.1724,
+    queryLng || 72.4346,
   ]);
-  const [mapZoom, setMapZoom] = useState<number>(queryLat ? 13 : 12);
+  const [mapZoom, setMapZoom] = useState<number>(queryLat ? 14 : 13);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [showMap, setShowMap] = useState<boolean>(true);
   const [currentGeo, setCurrentGeo] = useState<{ lat: number; lng: number; displayName: string } | null>(
-    queryLat && queryLng ? { lat: queryLat, lng: queryLng, displayName: queryLocation || 'Searched Location' } : null
+    queryLat && queryLng ? { lat: queryLat, lng: queryLng, displayName: queryLocation || 'Palanpur, Gujarat' } : { lat: 24.1724, lng: 72.4346, displayName: 'Palanpur, Gujarat' }
   );
 
   // Autocomplete Suggestions State
@@ -100,33 +100,34 @@ const SearchPage: React.FC = () => {
     try {
       let results = await fetchProperties(lat, lng, searchRadius);
 
-      // If backend returned no rooms (e.g. backend offline or DB empty in that area),
-      // fallback to filtering available store rooms gracefully
+      // If backend returned no rooms, fallback to store real Palanpur listings
       if (!results || results.length === 0) {
         results = storeRooms.filter((r) => {
           const coords = getRoomCoordinates(r);
           if (!coords) return false;
           const dist = calculateDistance(lat, lng, coords[0], coords[1]);
-          return dist <= searchRadius * 2;
+          return dist <= searchRadius * 2.5;
         });
       }
 
-      // If no rooms exist at this location, dynamically generate authentic verified rooms!
       if (!results || results.length === 0) {
-        const placeName = displayName || location || 'Searched Location';
-        const generated = generateRoomsForLocation(lat, lng, placeName, 8);
-        addRooms(generated);
-        results = generated;
+        results = storeRooms;
       }
 
-      // Filter by Budget & Type
+      // Filter by Budget, Type & Area
       results = results.filter((r) => {
         let matches = true;
         if (budget === 'under_10k' && r.price > 10000) matches = false;
         if (budget === '10k_20k' && (r.price < 10000 || r.price > 20000)) matches = false;
         if (budget === 'above_20k' && r.price < 20000) matches = false;
-        if (roomType && r.type?.toLowerCase() !== roomType.toLowerCase()) matches = false;
+        if (roomType && r.type?.toLowerCase() !== roomType.toLowerCase() && (r.propertyType?.toLowerCase() !== roomType.toLowerCase())) matches = false;
         if (r.status !== 'AVAILABLE') matches = false;
+        if (selectedArea && selectedArea !== 'All') {
+          const matchLoc = (r.locality || '').toLowerCase().includes(selectedArea.toLowerCase()) ||
+                           (r.address || '').toLowerCase().includes(selectedArea.toLowerCase()) ||
+                           (r.type || '').toLowerCase().includes(selectedArea.toLowerCase());
+          if (!matchLoc) matches = false;
+        }
         return matches;
       });
 
@@ -181,38 +182,36 @@ const SearchPage: React.FC = () => {
         setCurrentGeo(null);
       }
 
-      // Fetch from API or fallback
+      // Fetch from API or fallback to real Palanpur listings
       let results = await fetchProperties(lat, lng, searchRadius);
 
       if (!results || results.length === 0) {
-        // Fallback to store rooms
         if (lat && lng) {
           results = storeRooms.filter((r) => {
             const coords = getRoomCoordinates(r);
             if (!coords) return false;
-            return calculateDistance(lat!, lng!, coords[0], coords[1]) <= searchRadius * 2;
+            return calculateDistance(lat!, lng!, coords[0], coords[1]) <= searchRadius * 2.5;
           });
-
-          // If no rooms exist at this location, dynamically generate authentic verified rooms!
-          if (!results || results.length === 0) {
-            const placeName = locText || 'Searched Location';
-            const generated = generateRoomsForLocation(lat, lng, placeName, 8);
-            addRooms(generated);
-            results = generated;
-          }
-        } else {
+        }
+        if (!results || results.length === 0) {
           results = storeRooms;
         }
       }
 
-      // Filter by Budget & Type
+      // Filter by Budget, Type & Area
       results = results.filter((r) => {
         let matches = true;
         if (budget === 'under_10k' && r.price > 10000) matches = false;
         if (budget === '10k_20k' && (r.price < 10000 || r.price > 20000)) matches = false;
         if (budget === 'above_20k' && r.price < 20000) matches = false;
-        if (roomType && r.type?.toLowerCase() !== roomType.toLowerCase()) matches = false;
+        if (roomType && r.type?.toLowerCase() !== roomType.toLowerCase() && (r.propertyType?.toLowerCase() !== roomType.toLowerCase())) matches = false;
         if (r.status !== 'AVAILABLE') matches = false;
+        if (selectedArea && selectedArea !== 'All') {
+          const matchLoc = (r.locality || '').toLowerCase().includes(selectedArea.toLowerCase()) ||
+                           (r.address || '').toLowerCase().includes(selectedArea.toLowerCase()) ||
+                           (r.type || '').toLowerCase().includes(selectedArea.toLowerCase());
+          if (!matchLoc) matches = false;
+        }
         return matches;
       });
 
@@ -398,6 +397,28 @@ const SearchPage: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">
+                    Palanpur Locality / Area
+                  </label>
+                  <select
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 outline-none focus:ring-2 focus:ring-indigo-500/20 text-sm font-medium text-zinc-900 dark:text-white cursor-pointer"
+                    value={selectedArea}
+                    onChange={(e) => setSelectedArea(e.target.value)}
+                  >
+                    <option value="All">All Localities in Palanpur</option>
+                    <option value="Aroma Circle">Aroma Circle / Abu Highway</option>
+                    <option value="College Road">College Road / Vidyamandir</option>
+                    <option value="Station Area">Railway Station Road / Cozy Tower</option>
+                    <option value="Mansarovar">Mansarovar Road / Lake</option>
+                    <option value="Taley Baug">Taley Baug Area</option>
+                    <option value="Deesa">Deesa Highway Cross Road</option>
+                    <option value="Gayatri Nagar">Gayatri Nagar</option>
+                    <option value="Shanti Nagar">Shanti Nagar</option>
+                    <option value="Kanodar">Kanodar Highway</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">
                     Property Type
                   </label>
                   <select
@@ -405,11 +426,14 @@ const SearchPage: React.FC = () => {
                     value={roomType}
                     onChange={(e) => setRoomType(e.target.value)}
                   >
-                    <option value="">Any Type</option>
+                    <option value="">Any Property Type</option>
+                    <option value="pg">Paying Guest (PG)</option>
+                    <option value="hostel">Hostel</option>
+                    <option value="flat">Flat / Apartment</option>
                     <option value="single">Single Room</option>
-                    <option value="shared">Shared Room</option>
-                    <option value="suite">Suite</option>
-                    <option value="penthouse">Penthouse</option>
+                    <option value="shared">Shared Room / Room-Sharing</option>
+                    <option value="suite">Executive Suite</option>
+                    <option value="penthouse">Penthouse / Studio</option>
                   </select>
                 </div>
 
@@ -531,16 +555,28 @@ const SearchPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-32 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
-                <div className="w-16 h-16 bg-zinc-50 dark:bg-zinc-800 text-zinc-400 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-24 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm p-8">
+                <div className="w-16 h-16 bg-indigo-50 dark:bg-zinc-800 text-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
-                  No available rooms found
+                  No verified rooms match this filter
                 </h3>
-                <p className="text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-                  Try adjusting your filters, increasing the radius, or searching another location like Vadodara, Ahmedabad, or Jaipur.
+                <p className="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto text-sm mb-6">
+                  No listings found for this specific budget or type in Palanpur. Reset your filters to browse all verified real properties across Palanpur, Gujarat.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBudget('');
+                    setRoomType('');
+                    setSelectedArea('All');
+                    performSearchWithCoords(24.1724, 72.4346, 'Palanpur, Gujarat', 15);
+                  }}
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-md shadow-indigo-600/20"
+                >
+                  Show All Palanpur Properties
+                </button>
               </div>
             )}
           </div>

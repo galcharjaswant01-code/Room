@@ -85,17 +85,28 @@ const RoomCard: React.FC<{
           </button>
         )}
 
-        <div className="absolute top-4 left-4 flex items-center gap-2">
+        <div className="absolute top-4 left-4 flex items-center gap-1.5 flex-wrap max-w-[85%]">
+          {room.propertyType && (
+            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider shadow-sm bg-zinc-900/90 text-white backdrop-blur-xs">
+              {room.propertyType}
+            </span>
+          )}
           {isNew && (
-            <span className="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm bg-blue-600 text-white">
+            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm bg-blue-600 text-white">
               NEW
             </span>
           )}
-          <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm ${room.status === RoomStatus.AVAILABLE ? 'bg-emerald-500 text-white' : 'bg-zinc-900 text-white'}`}>
-            {room.status}
-          </span>
-          <span className="bg-black/60 backdrop-blur-md text-white text-[9px] font-bold px-2 py-1 rounded-lg flex items-center gap-1">
-            <span>📷</span> {room.mediaGallery?.length || room.images.length || 5}
+          {room.availabilityType === 'LISTING_ONLY' ? (
+            <span className="px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-wider shadow-sm bg-amber-500 text-amber-950">
+              Listing Only
+            </span>
+          ) : (
+            <span className={`px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm ${room.status === RoomStatus.AVAILABLE ? 'bg-emerald-600 text-white' : 'bg-zinc-900 text-white'}`}>
+              Available
+            </span>
+          )}
+          <span className="bg-black/60 backdrop-blur-md text-white text-[9px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1">
+            <span>📷</span> {room.mediaGallery?.length || room.images.length || 4}
           </span>
         </div>
       </div>
@@ -107,33 +118,37 @@ const RoomCard: React.FC<{
           </Link>
           <span className="text-amber-500 text-sm font-bold flex items-center gap-1">★ {room.rating}</span>
         </div>
-        <p className="text-xs text-zinc-400 font-medium mt-0.5">{room.location.address}</p>
-        <div className="mt-4 flex flex-col gap-2 border-t border-zinc-50 pt-3">
+        <p className="text-xs text-zinc-500 font-medium mt-0.5 flex items-center gap-1">
+          <span>📍</span> {room.locality ? `${room.locality}, Palanpur` : room.location.address}
+        </p>
+        <div className="mt-3 flex flex-col gap-2 border-t border-zinc-100 pt-3">
           <div className="flex items-center justify-between">
-            <p className="font-bold text-zinc-900 text-sm">{formatPrice(room.price)} <span className="font-medium text-zinc-400 text-[10px] uppercase">/ night</span></p>
-            <span className="text-[9px] px-2 py-0.5 rounded-md font-black uppercase tracking-widest bg-zinc-100 text-zinc-500">
-              {room.category}
+            <p className="font-bold text-zinc-900 text-sm">
+              {formatPrice(room.price)} <span className="font-medium text-zinc-400 text-[10px] uppercase">/ month</span>
+            </p>
+            <span className="text-[9px] px-2 py-0.5 rounded-md font-black uppercase tracking-widest bg-zinc-100 text-zinc-600">
+              {room.locality?.split('/')[0] || room.category}
             </span>
           </div>
           <div className="flex items-center justify-between gap-1 mt-1 pt-1 border-t border-zinc-100">
              <div className="flex items-center gap-1.5 flex-wrap">
                <a 
-                 href={`https://www.google.com/maps/search/?api=1&query=${room.location.lat},${room.location.lng}`}
+                 href={`https://www.google.com/maps/dir/?api=1&destination=${room.location.lat},${room.location.lng}`}
+                 target="_blank" rel="noopener noreferrer"
+                 onClick={(e) => e.stopPropagation()}
+                 className="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 px-2 py-1 rounded-md transition-colors"
+                 title="Directions to Palanpur Location"
+               >
+                 🧭 Directions
+               </a>
+               <a 
+                 href={room.sourceUrl || `https://www.google.com/maps/search/?api=1&query=${room.location.lat},${room.location.lng}`}
                  target="_blank" rel="noopener noreferrer"
                  onClick={(e) => e.stopPropagation()}
                  className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 px-2 py-1 rounded-md transition-colors"
-                 title="Open in Google Maps"
+                 title="View on Google Maps"
                >
                  🗺️ Map
-               </a>
-               <a 
-                 href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(`${room.title} ${room.location.address} real room interior`)}`}
-                 target="_blank" rel="noopener noreferrer"
-                 onClick={(e) => e.stopPropagation()}
-                 className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-md transition-colors"
-                 title="View real photos of this property on Google"
-               >
-                 📸 Real Photos
                </a>
              </div>
              {(room as any).distance !== undefined && (

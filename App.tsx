@@ -14,6 +14,7 @@ import OwnerDashboard from './pages/OwnerDashboard';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import ProfilePage from './pages/ProfilePage';
 import OwnerOnboarding from './pages/OwnerOnboarding';
+import AdminDashboard from './pages/AdminDashboard';
 import RoomCard from './components/RoomCard';
 import { UserRole } from './types';
 
@@ -89,6 +90,7 @@ const AppContent: React.FC = () => {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/rooms" element={<HomePage />} />
             <Route path="/rooms/:id" element={<RoomDetailsPage />} />
+            <Route path="/room/:id" element={<RoomDetailsPage />} />
             <Route path="/verify" element={<VerifyEmailPage />} />
             
             <Route path="/profile" element={
@@ -122,25 +124,8 @@ const AppContent: React.FC = () => {
             } />
 
             <Route path="/admin" element={
-              <PrivateRoute roles={[UserRole.ADMIN]}>
-                <div className="p-32 text-center">
-                   <h2 className="text-4xl font-black text-gray-900 mb-4 tracking-tighter">Admin Control Center</h2>
-                   <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-xs">System settings and user management</p>
-                   <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                      <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm">
-                        <span className="text-3xl block mb-4">👥</span>
-                        <h4 className="font-black text-gray-900 text-sm uppercase">Users</h4>
-                      </div>
-                      <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm">
-                        <span className="text-3xl block mb-4">🏠</span>
-                        <h4 className="font-black text-gray-900 text-sm uppercase">Properties</h4>
-                      </div>
-                      <div className="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm">
-                        <span className="text-3xl block mb-4">🛡️</span>
-                        <h4 className="font-black text-gray-900 text-sm uppercase">Security</h4>
-                      </div>
-                   </div>
-                </div>
+              <PrivateRoute roles={[UserRole.ADMIN, UserRole.OWNER]}>
+                <AdminDashboard />
               </PrivateRoute>
             } />
           </Routes>

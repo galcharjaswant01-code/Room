@@ -20,17 +20,8 @@ export const uploadFiles = async (files: File[]): Promise<string[]> => {
           reader.onerror = () => resolve(URL.createObjectURL(file));
           reader.readAsDataURL(file);
         } else {
-          // Video file handling
-          const name = file.name.toLowerCase();
-          if (name.includes('12684293') || name.includes('60fps')) {
-            resolve('/room-videos/12684293_1920_1080_60fps.mp4');
-          } else if (name.includes('13394638') || name.includes('30fps')) {
-            resolve('/room-videos/13394638_1080_1920_30fps.mp4');
-          } else if (name.includes('room-video')) {
-            resolve('/room-videos/room-video-1.mp4');
-          } else {
-            resolve(URL.createObjectURL(file));
-          }
+          // Video or other media file
+          resolve(URL.createObjectURL(file));
         }
       });
     })

@@ -98,10 +98,10 @@ const HomePage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight mb-6 animate-in slide-in-from-bottom-5 duration-700">
-              Find a place you'll <span className="text-indigo-400">love to live.</span>
+              Find real rooms in <span className="text-indigo-400">Palanpur, Gujarat.</span>
             </h1>
             <p className="text-lg sm:text-xl text-zinc-300 font-medium mb-10 max-w-xl animate-in slide-in-from-bottom-5 duration-700 delay-100">
-              Search thousands of verified rooms, PGs, and apartments. Book instantly with confidence and secure your next home today.
+              Browse authentic PGs, rental rooms, flats, hostels, and apartments across Palanpur with real coordinates and transparent availability.
             </p>
 
             {/* Main Search Box */}
@@ -113,7 +113,7 @@ const HomePage: React.FC = () => {
                   </div>
                   <input 
                     type="text" 
-                    placeholder="Where do you want to live?" 
+                    placeholder="Enter Palanpur locality e.g. College Road, Aroma Circle, Station..." 
                     className="w-full pl-12 pr-4 py-4 bg-zinc-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 font-medium text-zinc-900 placeholder:text-zinc-500 outline-none"
                     value={location}
                     onChange={(e) => handleLocationChange(e.target.value)}
@@ -162,11 +162,15 @@ const HomePage: React.FC = () => {
               </form>
             </div>
 
-            {/* Quick Filters */}
+            {/* Quick Filters for Palanpur */}
             <div className="mt-6 flex flex-wrap gap-2 animate-in slide-in-from-bottom-5 duration-700 delay-300">
-              <span className="text-zinc-400 text-sm font-medium mr-2 self-center">Popular:</span>
-              {['Students', 'PG', '1BHK', 'Furnished', 'Under ₹10K'].map((tag) => (
-                <button key={tag} className="px-4 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-sm font-medium transition-colors backdrop-blur-sm">
+              <span className="text-zinc-400 text-sm font-medium mr-2 self-center">Palanpur Localities:</span>
+              {['College Road', 'Aroma Circle', 'Station Area', 'Mansarovar', 'Taley Baug', 'PG & Hostels', 'Flats'].map((tag) => (
+                <button 
+                  key={tag}
+                  onClick={() => navigate(`/search?location=${encodeURIComponent(tag.includes('Palanpur') ? tag : tag + ', Palanpur')}`)}
+                  className="px-4 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-white text-sm font-medium transition-colors backdrop-blur-sm cursor-pointer"
+                >
                   {tag}
                 </button>
               ))}
@@ -216,8 +220,8 @@ const HomePage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-10">
             <div>
-              <h2 className="text-3xl font-black text-zinc-900 mb-2 tracking-tight">Featured Properties</h2>
-              <p className="text-zinc-500 font-medium text-lg">Handpicked rooms verified by our team.</p>
+              <h2 className="text-3xl font-black text-zinc-900 mb-2 tracking-tight">Real Properties in Palanpur, Gujarat</h2>
+              <p className="text-zinc-500 font-medium text-lg">Verified listings with real coordinates, public source records, and transparent vacancy.</p>
             </div>
             <button onClick={() => navigate('/search')} className="hidden sm:flex text-indigo-600 font-bold hover:text-indigo-700 items-center gap-1 group">
               View All <span className="group-hover:translate-x-1 transition-transform">→</span>

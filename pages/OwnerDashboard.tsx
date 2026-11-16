@@ -36,6 +36,7 @@ const OwnerDashboard: React.FC = () => {
     { id: 'Booking Requests', icon: '📅', label: 'Booking Requests' },
     { id: 'Earnings', icon: '💰', label: 'Earnings & Payouts' },
     { id: 'Profile', icon: '👤', label: 'Owner Profile' },
+    { id: 'Admin Sync', icon: '⚡', label: 'Sync Palanpur Listings', isLink: true, path: '/admin' },
     { id: 'Explore Rooms', icon: '🔍', label: 'Explore Rooms', isLink: true, path: '/rooms' },
   ];
 

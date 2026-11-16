@@ -33,6 +33,7 @@ interface AppState {
   updateProfile: (updatedUser: Partial<User>) => void;
   toggleWishlist: (roomId: string) => void;
   addRooms: (newRooms: Room[]) => void;
+  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'isRead'> & Partial<Pick<Notification, 'id' | 'timestamp' | 'isRead'>>) => void;
   markNotificationAsRead: (id: string) => Promise<void>;
   markAllNotificationsAsRead: () => Promise<void>;
 }
@@ -45,15 +46,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const getInitialRooms = () => {
     let dynamicStored: Room[] = [];
     try {
-      const raw = localStorage.getItem('stayhub_rooms_v3');
+      const raw = localStorage.getItem('stayhub_rooms_palanpur_v1');
       if (raw) dynamicStored = JSON.parse(raw);
     } catch {}
+
     const map = new Map<string, Room>();
-    mockRooms.forEach(r => map.set(r.id, r));
+
+    // 1. First process stored dynamic rooms (preserving newly added ones on top)
+    const sanitizedDynamic: Room[] = [];
     dynamicStored.forEach(r => {
       const existingMock = mockRooms.find(m => m.id === r.id);
       if (existingMock) {
-        map.set(r.id, {
+        sanitizedDynamic.push({
           ...r,
           images: existingMock.images,
           videoUrl: existingMock.videoUrl,
@@ -61,15 +65,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           mediaGallery: existingMock.mediaGallery
         });
       } else {
-        // Only keep dynamic room if images are valid web URLs or Base64 data
         const sanitizedImages = (r.images || []).filter(img => !img.startsWith('/room-') && !img.startsWith('/properties/'));
-        map.set(r.id, {
+        sanitizedDynamic.push({
           ...r,
           images: sanitizedImages.length > 0 ? sanitizedImages : ['https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=1200&q=80'],
           videoUrl: r.videoUrl && (r.videoUrl.startsWith('http://') || r.videoUrl.startsWith('https://')) ? r.videoUrl : undefined
         });
       }
     });
+
+    // 2. Put newly created dynamic rooms on top, followed by mock rooms
+    sanitizedDynamic.forEach(r => map.set(r.id, r));
+    mockRooms.forEach(r => {
+      if (!map.has(r.id)) {
+        map.set(r.id, r);
+      }
+    });
+
     return Array.from(map.values());
   };
 
@@ -77,12 +89,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addRooms = (newRooms: Room[]) => {
     setRooms(prev => {
-      const map = new Map<string, Room>();
-      prev.forEach(r => map.set(r.id, r));
-      newRooms.forEach(r => map.set(r.id, r));
-      const combined = Array.from(map.values());
+      const existingIds = new Set(newRooms.map(r => r.id));
+      const filteredPrev = prev.filter(r => !existingIds.has(r.id));
+      // Place newly added rooms right at the top for instant visibility
+      const combined = [...newRooms, ...filteredPrev];
       try {
-        localStorage.setItem('stayhub_rooms_v3', JSON.stringify(combined));
+        localStorage.setItem('stayhub_rooms_palanpur_v1', JSON.stringify(combined));
       } catch {}
       return combined;
     });
@@ -204,6 +216,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setNotifications(prev => {
       const next = prev.map(n => ({ ...n, isRead: true }));
       localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+      return next;
+    });
+  };
+  const addNotification = (notifData: Omit<Notification, 'id' | 'timestamp' | 'isRead'> & Partial<Pick<Notification, 'id' | 'timestamp' | 'isRead'>>) => {
+    const newNotif: Notification = {
+      id: notifData.id || `notif-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      timestamp: notifData.timestamp || new Date().toISOString(),
+      isRead: notifData.isRead ?? false,
+      userId: notifData.userId || currentUser?.id || 'u-owner-main',
+      title: notifData.title,
+      message: notifData.message,
+      type: notifData.type || 'SYSTEM',
+      relatedId: notifData.relatedId,
+      link: notifData.link
+    };
+
+    setNotifications(prev => {
+      const next = [newNotif, ...prev];
+      try {
+        localStorage.setItem('stayhub_notifications_v1', JSON.stringify(next));
+      } catch {}
       return next;
     });
   };
@@ -542,7 +575,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         notifications,
         analytics,
         wishlist, isAuthModalOpen, authModalMode,
-      login, register, detectRoleFromEmail, syncUserFromAuth, logout, updateRoomStatus, addBooking, updateBookingStatus, updateProfile, toggleWishlist, addRooms, openAuthModal, closeAuthModal, setAuthModalMode, requireAuth,
+      login, register, detectRoleFromEmail, syncUserFromAuth, logout, updateRoomStatus, addBooking, updateBookingStatus, updateProfile, toggleWishlist, addRooms, addNotification, openAuthModal, closeAuthModal, setAuthModalMode, requireAuth,
       markNotificationAsRead, markAllNotificationsAsRead
     }
   }, children);

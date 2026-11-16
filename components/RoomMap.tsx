@@ -43,7 +43,7 @@ const RoomMap: React.FC<RoomMapProps> = ({
   rooms = [],
   selectedRoomId,
   onSelectRoom,
-  center = [22.3072, 73.1812], // Vadodara default if not provided
+  center = [24.1724, 72.4346], // Palanpur, Gujarat center default
   zoom = 13,
   userLocation,
   onLocationFound,
@@ -273,23 +273,25 @@ const RoomMap: React.FC<RoomMapProps> = ({
 
       const marker = L.marker(coords, { icon: customIcon }).addTo(map);
 
-      // Popup with room details & "View Room" button + Google Links
+      // Popup with real Palanpur room details & "View Room" + "Get Directions"
       const coverImage =
         room.images && room.images.length > 0
           ? room.images[0]
           : 'https://images.unsplash.com/photo-1522771731515-6e01a8848db7?auto=format&fit=crop&w=800&q=80';
 
-      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coords[0]},${coords[1]}`;
-      const googleImagesUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(
-        `${room.title} ${room.location?.address || room.city || ''} real room interior`
-      )}`;
+      const googleMapsUrl = room.sourceUrl || `https://www.google.com/maps/search/?api=1&query=${coords[0]},${coords[1]}`;
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${coords[0]},${coords[1]}`;
+
+      const availabilityBadge = room.availabilityType === 'LISTING_ONLY'
+        ? `<span style="font-size: 9px; font-weight: 800; color: #b45309; background: #fef3c7; padding: 2px 6px; border-radius: 4px;">ℹ️ Listing Info Only</span>`
+        : `<span style="font-size: 9px; font-weight: 800; color: #047857; background: #ecfdf5; padding: 2px 6px; border-radius: 4px;">✓ Confirmed Available</span>`;
 
       const popupContent = `
-        <div style="font-family: inherit; width: 230px; padding: 3px;">
-          <div style="position: relative; width: 100%; height: 120px; border-radius: 12px; overflow: hidden; margin-bottom: 8px;">
+        <div style="font-family: inherit; width: 240px; padding: 4px;">
+          <div style="position: relative; width: 100%; height: 125px; border-radius: 12px; overflow: hidden; margin-bottom: 8px;">
             <img src="${coverImage}" style="width: 100%; height: 100%; object-fit: cover;" alt="${room.title}" />
-            <span style="position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.7); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; text-transform: uppercase;">
-              ${room.status || 'AVAILABLE'}
+            <span style="position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.8); color: white; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 6px; text-transform: uppercase;">
+              ${room.propertyType || room.type || 'ROOM'}
             </span>
             <span style="position: absolute; top: 6px; right: 6px; background: #4f46e5; color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px;">
               ★ ${room.rating || 4.8}
@@ -298,27 +300,28 @@ const RoomMap: React.FC<RoomMapProps> = ({
           <h4 style="font-weight: 800; font-size: 13px; color: #18181b; margin: 0 0 4px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
             ${room.title}
           </h4>
-          <p style="font-size: 11px; color: #71717a; margin: 0 0 8px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            📍 ${room.location?.address || room.address || 'Property Location'}
+          <p style="font-size: 11px; color: #64748b; margin: 0 0 6px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">
+            📍 ${room.locality || 'Palanpur'}, Gujarat
           </p>
           <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
             <span style="font-weight: 900; font-size: 14px; color: #4f46e5;">
               ${formattedPrice}
-              <span style="font-size: 10px; color: #a1a1aa; font-weight: 600;">/ night</span>
+              <span style="font-size: 10px; color: #94a3b8; font-weight: 600;">/ month</span>
             </span>
-            <span style="font-size: 10px; font-weight: 700; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px;">
-              Verified Photos ✓
-            </span>
+            ${availabilityBadge}
           </div>
-          <a href="#/rooms/${room.id}" style="display: block; text-align: center; width: 100%; padding: 8px 0; background-color: #4f46e5; color: white; text-decoration: none; font-size: 11px; font-weight: 800; border-radius: 8px; box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25); margin-bottom: 6px;">
+          <a href="#/rooms/${room.id}" style="display: block; text-align: center; width: 100%; padding: 7px 0; background-color: #4f46e5; color: white; text-decoration: none; font-size: 11px; font-weight: 800; border-radius: 8px; box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25); margin-bottom: 5px;">
             View Room Details →
           </a>
-          <div style="display: flex; gap: 4px;">
-            <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="flex: 1; text-align: center; padding: 5px 0; background: #f4f4f5; color: #3f3f46; text-decoration: none; font-size: 10px; font-weight: 700; border-radius: 6px;">
-              🗺️ Google Maps
-            </a>
-            <a href="${googleImagesUrl}" target="_blank" rel="noopener noreferrer" style="flex: 1; text-align: center; padding: 5px 0; background: #eff6ff; color: #2563eb; text-decoration: none; font-size: 10px; font-weight: 700; border-radius: 6px;">
-              📸 Real Photos
+          <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: block; text-align: center; width: 100%; padding: 6px 0; background-color: #059669; color: white; text-decoration: none; font-size: 10px; font-weight: 800; border-radius: 8px; margin-bottom: 5px;">
+            🧭 Get Directions (Palanpur)
+          </a>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
+            <span style="font-size: 9px; color: #94a3b8; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px;">
+              ${room.source || 'Palanpur Registry'}
+            </span>
+            <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 9px; color: #4f46e5; font-weight: 700; text-decoration: none;">
+              Maps Link ↗
             </a>
           </div>
         </div>

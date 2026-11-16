@@ -128,44 +128,70 @@ const RoomDetailsPage: React.FC = () => {
         <button onClick={() => navigate(-1)} className="text-xs font-bold text-zinc-400 uppercase tracking-widest hover:text-indigo-600 mb-6 flex items-center gap-2">
           ← Back to Search
         </button>
+
+        {/* Availability Transparency Banner */}
+        {room.availabilityType === 'LISTING_ONLY' ? (
+          <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-4 mb-6 flex items-start gap-3 shadow-xs">
+            <span className="text-xl">ℹ️</span>
+            <div>
+              <h4 className="font-bold text-sm">Listing Information Only – Availability on Request</h4>
+              <p className="text-xs text-amber-800 mt-0.5">
+                This is a real registered property listing in Palanpur, Gujarat. Live vacancy and dates are verified upon submitting a booking request.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl p-3.5 mb-6 flex items-center gap-3 shadow-xs">
+            <span className="text-xl">✓</span>
+            <div className="text-xs font-bold text-emerald-800">
+              Verified Real Property in Palanpur, Gujarat • Confirmed Available for Booking
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="px-3 py-1 bg-emerald-500/10 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5">
-                <span>🦉</span> TripAdvisor Heritage Choice
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
+              <span className="px-3 py-1 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full">
+                {room.propertyType || room.type} in Palanpur
               </span>
-              <span className="text-xs font-bold text-zinc-400">#1 Boutique Stay in {room.location.address.split(',')[2] || 'City'}</span>
+              <span className="px-3 py-1 bg-emerald-500/10 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5">
+                <span>📍</span> {room.locality || 'Palanpur City'}
+              </span>
+              <span className="text-xs font-bold text-zinc-400">
+                Source: {room.source || 'Palanpur Verified Registry'}
+              </span>
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">{room.title}</h1>
             <p className="text-zinc-500 font-medium flex items-center gap-2 mt-1.5 mb-3">
-              📍 {room.location.address} • <span className="text-indigo-600 font-bold">{room.category}</span>
+              📍 {room.location.address}
             </p>
             <div className="flex flex-wrap gap-2.5">
               <a 
-                href={`https://www.google.com/maps/search/?api=1&query=${room.location.lat},${room.location.lng}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${room.location.lat},${room.location.lng}`}
+                target="_blank" rel="noopener noreferrer"
+                className="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-1.5 rounded-lg border border-emerald-200 flex items-center gap-1.5 transition-all shadow-xs"
+              >
+                🧭 Get Directions to Property
+              </a>
+              <a 
+                href={room.sourceUrl || `https://www.google.com/maps/search/?api=1&query=${room.location.lat},${room.location.lng}`}
                 target="_blank" rel="noopener noreferrer"
                 className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 flex items-center gap-1 transition-all hover:bg-indigo-100"
               >
                 🗺️ View on Google Maps
               </a>
               <a 
-                href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(room.title + ' ' + room.location.address + ' real room interior')}`}
+                href={`https://www.google.com/search?tbm=isch&q=${encodeURIComponent(room.title + ' ' + (room.locality || '') + ' Palanpur Gujarat real photos')}`}
                 target="_blank" rel="noopener noreferrer"
                 className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 flex items-center gap-1 transition-all hover:bg-blue-100"
               >
                 📸 Real Photos on Google
               </a>
               <a 
-                href={`https://www.google.com/maps/dir/?api=1&destination=${room.location.lat},${room.location.lng}`}
-                target="_blank" rel="noopener noreferrer"
-                className="text-xs font-bold text-zinc-700 hover:text-zinc-900 bg-zinc-100 px-3 py-1.5 rounded-lg border border-zinc-200 flex items-center gap-1 transition-all hover:bg-zinc-200"
-              >
-                📍 Get Directions
-              </a>
-              <a 
                 href={`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${room.location.lat},${room.location.lng}`}
                 target="_blank" rel="noopener noreferrer"
-                className="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200 flex items-center gap-1 transition-all hover:bg-emerald-100"
+                className="text-xs font-bold text-zinc-700 hover:text-zinc-900 bg-zinc-100 px-3 py-1.5 rounded-lg border border-zinc-200 flex items-center gap-1 transition-all hover:bg-zinc-200"
               >
                 🧭 360° Street View
               </a>
