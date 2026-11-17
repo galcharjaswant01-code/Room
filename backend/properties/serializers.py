@@ -39,7 +39,7 @@ class RoomSerializer(serializers.ModelSerializer):
         fields = ['id', 'owner', 'owner_name', 'title', 'description', 'price', 'location', 
                   'address', 'locality', 'city', 'latitude', 'longitude', 'room_type', 
                   'phone', 'availability', 'is_available', 'is_active',
-                  'source', 'source_listing_id', 'source_url', 'last_synced',
+                  'source', 'source_listing_id', 'source_url', 'media_source_url', 'data_fields', 'last_synced',
                   'facilities', 'facilities_ids', 'images', 'media_items', 'reviews', 'created_at']
         read_only_fields = ['owner', 'created_at']
 

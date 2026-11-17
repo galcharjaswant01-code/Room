@@ -1,6 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RoomViewSet, FacilityViewSet, RoomImageViewSet, ReviewViewSet, SyncPalanpurView
+from .views import (
+    RoomViewSet, 
+    FacilityViewSet, 
+    RoomImageViewSet, 
+    ReviewViewSet, 
+    SyncPalanpurView, 
+    TestSourceView
+)
 
 router = DefaultRouter()
 router.register(r'rooms', RoomViewSet, basename='rooms')
@@ -8,6 +15,7 @@ router.register(r'facilities', FacilityViewSet)
 
 urlpatterns = [
     path('sync-palanpur/', SyncPalanpurView.as_view(), name='sync-palanpur'),
+    path('test-source/', TestSourceView.as_view(), name='test-source'),
     path('', include(router.urls)),
     path('rooms/<int:room_pk>/images/', RoomImageViewSet.as_view({'get': 'list', 'post': 'create'})),
     path('rooms/<int:room_pk>/images/<int:pk>/', RoomImageViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'})),

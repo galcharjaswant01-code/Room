@@ -75,6 +75,8 @@ export interface Room {
   source?: string;
   sourceListingId?: string;
   sourceUrl?: string;
+  mediaSourceUrl?: string;
+  dataFields?: Record<string, any>;
   lastSynced?: string;
   attribution?: string;
   images: string[];
@@ -160,4 +162,29 @@ export interface PropertyPerformance {
   occupancyRate: number;
   rating: number;
 }
+
+export interface ApiSourceStatus {
+  id: string;
+  name: string;
+  type: 'google_maps' | 'google_places' | 'property_api' | 'media_api';
+  connected: boolean;
+  required: boolean;
+  apiKeyPresent: boolean;
+  endpoint?: string;
+  lastTested?: string;
+  testStatus?: 'idle' | 'testing' | 'success' | 'error';
+  errorMessage?: string;
+  details?: string;
+}
+
+export interface SyncStats {
+  lastSyncTimestamp: string | null;
+  totalImported: number;
+  totalUpdated: number;
+  totalDuplicatesSkipped: number;
+  totalFailed: number;
+  sourcesActive: string[];
+  errorMessages: string[];
+}
+
 

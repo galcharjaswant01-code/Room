@@ -42,9 +42,11 @@ class Room(models.Model):
     is_active = models.BooleanField(default=True)
     
     # Real Listing & Source Tracking
-    source = models.CharField(max_length=100, default='manual', help_text="e.g. Google Places API, Palanpur Verified Registry, OSM")
+    source = models.CharField(max_length=100, default='manual', help_text="e.g. Google Places API, Palanpur Verified Registry, Property Listing API")
     source_listing_id = models.CharField(max_length=255, null=True, blank=True, db_index=True)
     source_url = models.URLField(max_length=1000, null=True, blank=True)
+    media_source_url = models.URLField(max_length=1500, null=True, blank=True, help_text="Original media source URL when permitted")
+    data_fields = models.JSONField(default=dict, blank=True, help_text="Key-value fields obtained from the source")
     last_synced = models.DateTimeField(null=True, blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
